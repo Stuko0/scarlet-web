@@ -1,0 +1,51 @@
+---
+console.log('header')
+---
+<div class="bg-[#f5ead6] w-full">
+    <header class="pt-8 p-4 mx-auto max-w-screen-xl lg:pt-16 flex flex-col lg:flex-row items-center justify-between ">
+        <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <svg class="w-16 max-w-20 mr-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#fb5335"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5.926 20.574a7.26 7.26 0 0 0 3.039 1.511c.107.035.179-.105.107-.175-2.395-2.285-1.079-4.758-.107-5.873.693-.796 1.68-2.107 1.608-3.865 0-.176.18-.317.322-.211 1.359.703 2.288 2.25 2.538 3.515.394-.386.537-.984.537-1.511 0-.176.214-.317.393-.176 1.287 1.16 3.503 5.097-.072 8.19-.071.071 0 .212.072.177a8.761 8.761 0 0 0 3.003-1.442c5.827-4.5 2.037-12.48-.43-15.116-.321-.317-.893-.106-.893.351-.036.95-.322 2.004-1.072 2.707-.572-2.39-2.478-5.105-5.195-6.441-.357-.176-.786.105-.75.492.07 3.27-2.063 5.352-3.922 8.059-1.645 2.425-2.717 6.89.822 9.808z" fill="#fbae00"></path></g></svg>
+            <span class="mb-4 text-3xl tracking-tight font-extrabold text-orange-600 self-end whitespace-nowrap">
+                !Scarlet
+            </span>
+        </a>
+        <div class="md:hidden">
+            <button class="text-orange-600 focus:outline-none" id="hamburger">
+                <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16m-7 6h7"
+                    ></path>
+                </svg>
+            </button>
+        </div>
+        <div class="toggle hidden md:flex md:items-center md:w-auto w-full text-center flex-col md:flex-row" id="menu">
+            <nav>
+                <ul class="md:flex items-center justify-between text-xl text-white md:text-gray-800 pt-4 md:pt-0 font-bold">
+                    <li class="bg-transparent md:hover:transition ease-in-out delay-75 md:hover:bg-[url('/primary.png')] md:hover:bg-contain md:hover:bg-no-repeat md:hover:bg-center md:hover:-translate-y-1 md:hover:scale-110 duration-300"><a class="md:p-4 py-3 px-0 block hover:text-orange-400 md:hover:text-white" href="#">Noticias</a></li>
+                    <li class="bg-transparent md:hover:transition ease-in-out delay-75 md:hover:bg-[url('/primary.png')] md:hover:bg-contain md:hover:bg-no-repeat md:hover:bg-center md:hover:-translate-y-1 md:hover:scale-110 duration-300"><a class="md:p-4 py-3 px-0 block hover:text-orange-400 md:hover:text-white" href="#">Contactos</a></li>
+                    <li class="bg-transparent md:hover:transition ease-in-out delay-75 md:hover:bg-[url('/primary.png')] md:hover:bg-contain md:hover:bg-no-repeat md:hover:bg-center md:hover:-translate-y-1 md:hover:scale-110 duration-300"><a class="md:p-4 py-3 px-0 block hover:text-orange-400 md:hover:text-white md:mb-0 mb-2" href="#">Acerca de</a></li>
+                    <li class="bg-transparent md:hover:transition ease-in-out delay-75 md:hover:bg-[url('/primary.png')] md:hover:bg-contain md:hover:bg-no-repeat md:hover:bg-center md:hover:-translate-y-1 md:hover:scale-110 duration-300"><a class="md:p-4 py-3 px-0 block hover:text-orange-400 md:hover:text-white md:mb-0 mb-2" href="#">Aplicacion</a></li>
+                    <li class="bg-transparent md:hover:transition ease-in-out delay-75 md:hover:bg-[url('/primary.png')] md:hover:bg-contain md:hover:bg-no-repeat md:hover:bg-center md:hover:-translate-y-1 md:hover:scale-110 duration-300"><a class="md:p-4 py-3 px-0 block hover:text-orange-400 md:hover:text-white" href="#">Iniciar Sesion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+</div>
+
+<script>
+    document.getElementById("hamburger").onclick = function toggleMenu() {
+        const navToggle = document.getElementsByClassName("toggle");
+        for (let i = 0; i < navToggle.length; i++) {
+            navToggle.item(i).classList.toggle("hidden");
+        }
+    };
+</script>
