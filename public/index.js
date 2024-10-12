@@ -1,4 +1,4 @@
-export const prerender = true;
+// export const prerender = true;
 import { 
   WebGLRenderer, ACESFilmicToneMapping, sRGBEncoding, 
   Color, CylinderGeometry, 
