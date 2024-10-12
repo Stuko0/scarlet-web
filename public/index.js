@@ -40,6 +40,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0,0,0);
 controls.dampingFactor = 0.05;
 controls.enableDamping = true;
+controls.enableZoom=false;
 
 let pmrem = new PMREMGenerator(renderer);
 pmrem.compileEquirectangularShader();
