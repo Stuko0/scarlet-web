@@ -1,5 +1,4 @@
-import { 
-  WebGLRenderer, ACESFilmicToneMapping, sRGBEncoding, 
+import {WebGLRenderer, ACESFilmicToneMapping, sRGBEncoding, Shape, ExtrudeGeometry,
   Color, CylinderGeometry, 
   RepeatWrapping, DoubleSide, BoxGeometry, Mesh, PointLight, MeshPhysicalMaterial, PerspectiveCamera,
   Scene, PMREMGenerator, PCFSoftShadowMap,
@@ -9,6 +8,8 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/contro
 import { RGBELoader } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/loaders/RGBELoader';
 import { mergeBufferGeometries } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/utils/BufferGeometryUtils';
 import SimplexNoise from 'https://cdn.skypack.dev/simplex-noise@3.0.0';
+
+export const prerender = true;
 
 const container = document.getElementById('container');
 const scene = new Scene();
@@ -58,9 +59,10 @@ const MAX_HEIGHT = 10;
     dirt: await new TextureLoader().loadAsync("/textures/dirt.png"),
     dirt2: await new TextureLoader().loadAsync("/textures/dirt2.jpg"),
     grass: await new TextureLoader().loadAsync("/textures/grass.jpg"),
-    sand: await new TextureLoader().loadAsync("/textures/sand.jpg"),
+    sand: await new TextureLoader().loadAsync("/textures/burned_floor.png"),
     water: await new TextureLoader().loadAsync("/textures/water.jpg"),
     stone: await new TextureLoader().loadAsync("/textures/stone.png"),
+    fire: await new TextureLoader().loadAsync("/textures/fire.png"),
   };
 
   const simplex = new SimplexNoise();
@@ -79,11 +81,12 @@ const MAX_HEIGHT = 10;
   }
 
   let stoneMesh = hexMesh(stoneGeo, textures.stone);
+  let fireMesh = hexMesh(fireGeo, textures.fire);
   let grassMesh = hexMesh(grassGeo, textures.grass);
   let dirt2Mesh = hexMesh(dirt2Geo, textures.dirt2);
   let dirtMesh  = hexMesh(dirtGeo, textures.dirt);
   let sandMesh  = hexMesh(sandGeo, textures.sand);
-  scene.add(stoneMesh, dirtMesh, dirt2Mesh, sandMesh, grassMesh);
+  scene.add(stoneMesh, dirtMesh, dirt2Mesh, sandMesh, grassMesh,fireMesh);
 
   let seaTexture = textures.water;
   seaTexture.repeat = new Vector2(1, 1);
@@ -169,6 +172,7 @@ let dirtGeo = new BoxGeometry(0,0,0);
 let dirt2Geo = new BoxGeometry(0,0,0);
 let sandGeo = new BoxGeometry(0,0,0);
 let grassGeo = new BoxGeometry(0,0,0);
+let fireGeo = new BoxGeometry(0,0,0);
 
 function hex(height, position) {
   let geo = hexGeometry(height, position);
@@ -182,14 +186,16 @@ function hex(height, position) {
   } else if(height > DIRT_HEIGHT) {
     dirtGeo = mergeBufferGeometries([geo, dirtGeo]);
 
-    if(Math.random() > 0.8) {
+    if(Math.random() > 0.7) {
       grassGeo = mergeBufferGeometries([grassGeo, tree(height, position)]);
     }
   } else if(height > GRASS_HEIGHT) {
     grassGeo = mergeBufferGeometries([geo, grassGeo]);
   } else if(height > SAND_HEIGHT) { 
     sandGeo = mergeBufferGeometries([geo, sandGeo]);
-
+    if(Math.random() > 0.6) {
+      fireGeo = mergeBufferGeometries([fireGeo, fire(height, position)]);
+    }
     if(Math.random() > 0.8 && stoneGeo) {
       stoneGeo = mergeBufferGeometries([stoneGeo, stone(height, position)]);
     }
@@ -224,6 +230,21 @@ function tree(height, position) {
   
   const geo3 = new CylinderGeometry(0, 0.8, treeHeight, 3);
   geo3.translate(position.x, height + treeHeight * 1.25 + 1, position.y);
+
+  return mergeBufferGeometries([geo, geo2, geo3]);
+}
+
+function fire(height, position) {
+  const fireHeight = Math.random() * 1 + 0.4;
+
+  const geo = new CylinderGeometry(0, 0.85, fireHeight, 4);
+  geo.translate(position.x, height + fireHeight * 0 + 1, position.y);
+  
+  const geo2 = new CylinderGeometry(0, 0.9, fireHeight, 4);
+  geo2.translate(position.x, height + fireHeight * 0.6 + 1, position.y);
+  
+  const geo3 = new CylinderGeometry(0, 0.8, fireHeight, 4);
+  geo3.translate(position.x, height + fireHeight * 1.25 + 1, position.y);
 
   return mergeBufferGeometries([geo, geo2, geo3]);
 }
@@ -268,8 +289,6 @@ function clouds() {
       envMap: envmap, 
       envMapIntensity: 0.75, 
       flatShading: true,
-      // transparent: true,
-      // opacity: 0.85,
     })
   );
 
@@ -280,4 +299,27 @@ function clouds() {
   });
 
   scene.add(mesh);
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      startRendering();
+    } else {
+      stopRendering();
+    }
+  });
+});
+
+observer.observe(container);
+
+function startRendering() {
+  renderer.setAnimationLoop(() => {
+    controls.update();
+    renderer.render(scene, camera);
+  });
+}
+
+function stopRendering() {
+  renderer.setAnimationLoop(null);
 }
