@@ -1,0 +1,16 @@
+---
+import Bomberos from "../../../public/Bomberos-Cochabamba.jpg"
+import Bomberos_Voluntarios from "../../../public/Bomberos-Voluntarios-Cochabamba.jpg"
+import Bomberos_GEOS from "../../../public/Bomberos-Voluntarios-GEOS-Cochabamba.jpg"
+import SAR from "../../../public/SAR-Cochabamba.jpg"
+import EntitiesCard from "../cards/EntitiesCard.astro"
+console.log("Entities")
+---
+<div class="md:grid-cols-3 mb-20 md:mb-32 md:mr-8 md:ml-8 max-w-6xl ml-auto mr-auto lg:ml-auto lg:mr-auto">
+    <div class="flex flex-wrap gap-8 justify-center">
+        <EntitiesCard title="Cuerpo de Bomberos" location="Cochabamba" imageSrc={Bomberos} imageSrcSet="https://scontent.flpb3-2.fna.fbcdn.net/v/t39.30808-6/326486643_508594541413956_4221878711794961733_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=bCjX8RXLzxwQ7kNvgHsddZ6&_nc_ht=scontent.flpb3-2.fna&_nc_gid=A76kyAJQjEP534Alkp4c0Ak&oh=00_AYDJTbre55YlUcug03TgMkgajpI-auKIUKYdhfecJiCtXw&oe=670E1FCD" altText="Bomberos"/>
+        <EntitiesCard title="Cuerpo de Bomberos Voluntarios" location="Cochabamba" imageSrc={Bomberos_Voluntarios} imageSrcSet="https://scontent.flpb3-2.fna.fbcdn.net/v/t39.30808-6/294980547_379991767581968_7696740118234137637_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=DaRIa0XbWt8Q7kNvgEQhw0V&_nc_ht=scontent.flpb3-2.fna&_nc_gid=APC3G04BBQCTUlzFplsuHEL&oh=00_AYD4LoeQ2xJ0hAVka8tmgLOiswYQ3A_W22eKbNZnOy-9sg&oe=670E8D97" altText="Bomberos Voluntarios"/>
+        <EntitiesCard title="Cuerpo de Bomberos GEOS" location="Cochabamba" imageSrc={Bomberos_GEOS} imageSrcSet="https://scontent.flpb3-2.fna.fbcdn.net/v/t39.30808-6/318508694_102318329403658_2983966379613204096_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=xAJL-u9B3BsQ7kNvgFSr0WW&_nc_ht=scontent.flpb3-2.fna&_nc_gid=AejZrbUkxRgaOeNR1yeIEmt&oh=00_AYCxS8hYS6UIKVpu_eA3TFywZ-nRkxbSajLO32UPZ3T2tg&oe=670E88A7" altText="Bomberos GEOS"/>
+        <EntitiesCard title="SAR" location="Cochabamba" imageSrc={SAR} imageSrcSet="https://scontent.flpb3-2.fna.fbcdn.net/v/t39.30808-6/313263053_3266678126880189_4533532402929154146_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=NyQyVpD0POsQ7kNvgHXOx39&_nc_ht=scontent.flpb3-2.fna&_nc_gid=AlT4h5lv5LOhCzJfhjzKAqj&oh=00_AYBbGP7azK3IyzouV3kmHI9ra5kT8S3mKdzDY_oOAJ9K3A&oe=670EAB2C" altText="SAR"/>
+    </div>
+</div>

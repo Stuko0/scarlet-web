@@ -1,0 +1,66 @@
+---
+console.log("Objectives")
+import { Image } from 'astro:assets';
+import Monkey from "../../../../public/monkey-tunari.jpg"
+import Llamitas from "../../../../public/llamitas-tunari.jpg"
+import Cemento from "../../../../public/cemento-con-bigote.png"
+import Buttons from "../../buttons/Buttons.astro"
+---
+
+<article class="md:mt-[-50px] px-5 md:px-0 mb-20 md:mb-32 md:mr-8 md:ml-8 ml-auto mr-auto lg:ml-auto lg:mr-auto">
+    <div class="md:max-w-6xl max-w-lg mx-auto">
+        <div class="grid md:grid-cols-[60%_40%] gap-0">
+            <div class="w-full relative">
+                <div class="bg-[#1e2738] bg-cover bg-center w-full h-96 absolute overflow-hidden">
+                    <picture class="flex bg-transparent" draggable="false">
+                        <source srcset="https://www.estilodeviajes.com/wp-content/uploads/2021/03/parque-nacional-tunari-1024x1024.jpg" media="(max-width: 700px)" type="image/jpg">
+                        <Image src={Llamitas} class="grayscale mix-blend-luminosity object-cover opacity-[0.2] w-full h-full md:h-[400px]" alt="llamitas" loading="lazy"/>
+                    </picture>
+                </div>
+                <div class="pl-20 py-16 pr-20 text-left relative z-10">
+                    <h1 class="inset-0 uppercase text-[#aacb6a] text-lg md:text-4xl leading-6 font-titles">el impacto</h1>
+                    <p class="text-white my-5 text-sm md:text-base leading-6 font-body">De 2001 a 2023, Cochabamba perdió 289 kha de cobertura arbórea, lo que equivale a una disminución del 11% de la cobertura arbórea desde 2000.</p>
+                    <Buttons variant="primary" size="base"><a href="https://www.globalforestwatch.org/dashboards/country/BOL/2/?dashboardPrompts=eyJzaG93UHJvbXB0cyI6dHJ1ZSwicHJvbXB0c1ZpZXdlZCI6WyJkYXNoYm9hcmRBbmFseXNlcyIsImRvd25sb2FkRGFzaGJvYXJkU3RhdHMiLCJzaGFyZVdpZGdldCJdLCJzZXR0aW5ncyI6eyJzaG93UHJvbXB0cyI6dHJ1ZSwicHJvbXB0c1ZpZXdlZCI6WyJkYXNoYm9hcmRBbmFseXNlcyIsImRvd25sb2FkRGFzaGJvYXJkU3RhdHMiLCJzaGFyZVdpZGdldCJdLCJzZXR0aW5ncyI6eyJzaG93UHJvbXB0cyI6dHJ1ZSwicHJvbXB0c1ZpZXdlZCI6W10sInNldHRpbmdzIjp7Im9wZW4iOmZhbHNlLCJzdGVwSW5kZXgiOjAsInN0ZXBzS2V5IjoiIn0sIm9wZW4iOnRydWUsInN0ZXBzS2V5IjoiZGFzaGJvYXJkQW5hbHlzZXMifSwic3RlcHNLZXkiOiIiLCJvcGVuIjpmYWxzZSwic3RlcEluZGV4IjowLCJmb3JjZSI6dHJ1ZX0sImZvcmNlIjp0cnVlfQ%3D%3D&lang=es_MX&location=WyJjb3VudHJ5IiwiQk9MIiwiMiJd&map=eyJjZW50ZXIiOnsibGF0Ijo0LjE1OTExNzkzMTcyMTcxNywibG5nIjotNzIuOTQwNjUwOTM5OTkwNjJ9LCJ6b29tIjo0LjE3MDg1MTI2NDY3NzAzMywiY2FuQm91bmQiOnRydWUsImRhdGFzZXRzIjpbXX0%3D&showMap=true&treeLossPct=eyJoaWdobGlnaHRlZCI6ZmFsc2V9">Ver más</a></Buttons>
+                </div>
+            </div>
+            <div class="w-full relative ">
+                <div class="bg-[#627d2c] bg-cover bg-center w-full h-96 absolute overflow-hidden">
+                    <picture class="flex bg-transparent" draggable="false">
+                        <source srcset="https://bolivianexpress3.s3-us-west-1.amazonaws.com/article_image/ulohzFPc2s.jpg" type="image/jpg">
+                        <Image src={Monkey}class="grayscale mix-blend-luminosity object-cover opacity-[0.2] w-full h-full" alt="llamitas" loading="lazy"/>
+                    </picture>
+                </div>
+                <div class="pl-5 py-14 pr-5 text-center items-center relative z-10 flex-col justify-between content-center">
+                    <h1 class="inset-0 uppercase mb-[0.83em] text-white text-sm md:text-base leading-4 font-bold font-titles">Avance del Proyecto</h1>
+                    <div class="box-border text-center items-center content-center">
+                        <Image src={Cemento} class="h-32 w-32 inline-block mb-[0.83em]" alt='cemento'/>
+                        <div class="py-1 text-left font-titles">
+                            <b class="text-white font-semibold leading-5 text-xl md:text-2xl">
+                                60%
+                            </b>
+                            <span class="text-white font-normal leading-5 text-lg md:text-xl opacity-70">
+                                de 100% de la meta
+                            </span>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm overflow-hidden p-1 font-titles">
+                            <div class="relative h-6 flex items-center justify-center">
+                              <div class="absolute top-0 bottom-0 left-0 rounded-lg w-[60%] bg-[#ea5a0c8f]"></div>
+                              <div class="relative text-red-900 font-medium text-sm">40%  restante</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+<article class="pb-12 md:pb-32 px-5 md:px-0 md:mr-8 md:ml-8 ml-auto mr-auto lg:ml-auto lg:mr-auto">
+    <div class="md:max-w-4xl max-w-lg mx-auto">
+        <h2  class="text-[#517b5b] text-2xl md:text-[2rem] font-semibold mb-5 leading-10 capitalize font-titles">El reto: detener los incendios forestales</h2>
+        <p class="text-gray-500 text-sm md:text-lg font-medium font-body mb-5">Proporcionar la información adecuada y en los menores tiempos posibles a las entidades pertinentes que trabajen luchando contra los incendios logrará que los incendios pasen a ser un problema sencillo de controlar y prevenir.</p>
+        <h2  class="text-[#517b5b] text-2xl md:text-[2rem] font-semibold mb-5 mt-12 leading-10 capitalize font-titles">la razon: la gran perdida de biodiversidad</h2>
+        <p class="text-gray-500 text-sm md:text-lg font-medium font-body mb-5">Desde 2002 hasta 2023, Cochabamba perdió 127 kha de bosque primario húmedo, lo que representa 46% de su pérdida total de cobertura arbórea en el mismo periodo de tiempo. El área total de bosque primario húmedo en Cochabamba disminuyó en 6.4% en este periodo de tiempo.</p>
+        <h2  class="text-[#517b5b] text-2xl md:text-[2rem] font-semibold mb-5 mt-12 leading-10 capitalize font-titles">Cómo se Hara: Con Mapas en Tiempo Real e IA</h2>
+        <p class="text-gray-500 text-sm md:text-lg font-medium font-body mb-5">Este proyecto implementa el uso de tecnologias poco aprovechadas en nuestra region para unificarlas bajo una sola aplicacion y además utilizando la información obtenida para generar pronosticos de posibles incendios futuros para que las autoridades que le den uso puedan mitigarlos de forma eficiente.</p>
+    </div>
+</article>

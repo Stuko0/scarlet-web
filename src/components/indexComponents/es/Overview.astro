@@ -1,0 +1,87 @@
+---
+import Map from "../../../components/maps/Map.astro";
+---
+
+<article class="bg-[#f1efec] pt-8 pb-12 md:pb-32 px-5 md:px-0">
+  <div class="md:max-w-6xl max-w-lg mx-auto md:mr-8 md:ml-8 ml-auto mr-auto lg:ml-auto lg:mr-auto">
+    <div class="grid md:grid-cols-[55%_45%] gap-6">
+      <div class="max-w-4xl">
+        <div
+          class="border-b-2 border-r-2 border-b-[#aacb6a] border-r-[#aacb6a] mb-5 md:mb-8 inline-flex"
+        >
+          <h1 class="pr-5 pb-3 font-semibold text-sm md:text-lg text-[#1a2d1f] font-titles">
+            Vista General del Proyecto
+          </h1>
+        </div>
+        <h2 class="text-[#517b5b] text-3xl font-semibold mb-5 leading-10 font-titles">
+          La meta de !Scarlet para la ciudad de Cochabamba es ayudar a resguardar las 2.81
+          millones de hectareas intactas de bosque. <br/> -Solamente en lo que va de 2024 se quemaron alrededor de 6,200 hectareas-
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                Especies en Riesgo
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                Al menos 560 especies amenazadas.
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                Bosque Natural en Riesgo
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                Al menos 280 Mha de hectareas de bosque natural amenazadas.
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                Emisiones de Carbon
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">156 Milliones mT*
+                <button
+                  type="button"
+                  class="ml-4 bg-white text-xs border-2 border-[#ea580c] py-[1px] px-[6px] rounded-full relative before:content-[attr(data-tip)] before:absolute before:px-3 before:py-2 before:left-1/2 before:-top-3 before:w-max before:max-w-xs before:-translate-x-1/2 before:-translate-y-full before:bg-gray-500 before:text-white before:rounded-md before:opacity-0 before:pointer-events-none before:transition-all after:absolute after:left-1/2 after:-top-3 after:h-0 after:w-0 after:-translate-x-1/2 after:border-8 after:border-t-gray-700 after:border-l-transparent after:border-b-transparent after:border-r-transparent after:opacity-0 after:pointer-events-none after:transition-all hover:before:opacity-100 hover:after:opacity-100"
+                  data-tip="La cantidad estimada de carbono que probablemente se liberará si el ecosistema se convierte - una función de la cantidad total de carbono almacenado en la biomasa y el suelo, y la vulnerabilidad del reservorio de carbono a las perturbaciones (datos y enfoque de Goldstein et al. 2020, Nature Climate Change)."
+                >
+                  ?
+                </button>
+              </p>
+              
+            </div>
+            <p class="pl-6 text-gray-500 text-sm pt-3 font-medium font-body">
+              *(toneladas metricas de CO2)
+            </p>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                Aumento de las Alertas de Incendio
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                Entre el 8 de Octubre del 2023 y el 6 de Octubre del 2024 hubo 671 alertas VIIRS
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 uppercase font-titles">
+            Porcentaje de Bosque Perdido
+          </h3>
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden p-1">
+            <div class="relative h-6 flex items-center justify-center">
+              <div class="absolute top-0 bottom-0 left-0 rounded-lg w-[11%] bg-[#ea5a0c8f]"></div>
+              <div class="relative text-red-900 font-medium text-sm font-titles">11%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Map/>
+    </div>
+  </div>
+</article>

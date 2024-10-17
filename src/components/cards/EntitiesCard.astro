@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import Buttons from "../buttons/Buttons.astro";
 const {
   title,
+  url,
   location,
   imageSrcSet,
   imageSrc,
@@ -13,7 +14,7 @@ const {
 } = Astro.props;
 ---
 
-<article class="text-center">
+<article class="text-center font-titles">
   <div class="relative transition transform hover:-translate-y-3 duration-500 hover:text-[#ea6118]">
     <div class="mb-3 md:mb-9 relative overflow-hidden h-[400px] w-[300px]">
       <picture class="h-full w-full">
@@ -34,6 +35,6 @@ const {
     </div>
   </div>
   <div class="flex justify-center">
-    <Buttons variant={buttonVariant} size={buttonSize}>{buttonText}</Buttons>
+    <Buttons variant={buttonVariant} size={buttonSize}><a href={url}>{buttonText}</a></Buttons>
   </div>
 </article>

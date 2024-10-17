@@ -1,0 +1,89 @@
+---
+console.log("overview");
+import Map from "../../components/maps/Map.astro";
+---
+
+<article class="bg-[#f1efec] pt-8 pb-12 md:pb-32 px-5 md:px-0">
+  <div class="md:max-w-6xl max-w-lg mx-auto md:mr-8 md:ml-8 ml-auto mr-auto lg:ml-auto lg:mr-auto">
+    <div class="grid md:grid-cols-[55%_45%] gap-6">
+      <div class="max-w-4xl">
+        <div
+          class="border-b-2 border-r-2 border-b-[#aacb6a] border-r-[#aacb6a] mb-5 md:mb-8 inline-flex"
+        >
+          <h1 class="pr-5 pb-3 font-semibold text-sm md:text-lg text-[#1a2d1f] font-titles">
+            Project Overview
+          </h1>
+        </div>
+        <h2 class="text-[#517b5b] text-3xl font-semibold mb-5 leading-10 font-titles">
+          !Scarlet's goal in the city of Cochabamba <br /> is to help safeguard 2.81
+          million hectareas of intact forest <br /> -since around 6,200 hectares
+          were burned in 2024 alone-
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                Species at Risk
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                At least 560 threatened species
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                Natural Forest at Risk
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                At least 280 Mha threatened natural forest
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                Carbon stored
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">156 Million mT*
+                <button
+                  type="button"
+                  class="ml-4 bg-white text-xs border-2 border-[#ea580c] py-[1px] px-[6px] rounded-full relative before:content-[attr(data-tip)] before:absolute before:px-3 before:py-2 before:left-1/2 before:-top-3 before:w-max before:max-w-xs before:-translate-x-1/2 before:-translate-y-full before:bg-gray-500 before:text-white before:rounded-md before:opacity-0 before:transition-all after:absolute after:left-1/2 after:-top-3 after:h-0 after:w-0 after:-translate-x-1/2 after:border-8 after:border-t-gray-700 after:border-l-transparent after:border-b-transparent after:border-r-transparent after:opacity-0 after:transition-all hover:before:opacity-100 hover:after:opacity-100"
+                  data-tip="The estimated amount of carbon likely to be released if the ecosystem is converted - a function of the total amount of carbon stored in biomass and soil, and the vulnerability of the carbon pool to disturbance (data and approach from Goldstein et al. 2020, Nature Climate Change)."
+                >
+                  ?
+                </button>
+              </p>
+              
+            </div>
+            <p class="pl-6 text-gray-500 text-sm pt-3 font-medium font-body">
+              *(metric tons of CO2 equivalents)
+            </p>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                Increase in fire alerts
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                671 VIIRS Alerts between October 8 2023 and October 6, 2024
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 uppercase font-titles">
+            Amount of Forest Lost
+          </h3>
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden p-1">
+            <div class="relative h-6 flex items-center justify-center">
+              <div class="absolute top-0 bottom-0 left-0 rounded-lg w-[11%] bg-[#ea5a0c8f]"></div>
+              <div class="relative text-red-900 font-medium text-sm font-titles">11%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Map/>
+    </div>
+  </div>
+</article>
