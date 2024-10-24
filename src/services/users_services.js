@@ -2,7 +2,7 @@ const apiURL = "https://412bnmkw.brs.devtunnels.ms:8000/users";
 
 export const registerUser = async (firstName, lastName, email, password) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/register`, {
+        const response = await fetch(`${apiURL}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

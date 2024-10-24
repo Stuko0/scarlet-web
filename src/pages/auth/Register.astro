@@ -1,6 +1,23 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/globals/Header.astro";
+import { checkLogin } from "../../services/users_services";
+
+const handleLogin = async (event) => {
+	event.preventDefault();
+	const form = event.target as HTMLFormElement;
+	const email = form.email.value;
+	const password = form.password.value;
+	try {
+		const response = await checkLogin(email, password);
+		console.log("Login success:", response);
+		alert("Logeado");
+		window.location.href = "/";
+	} catch (error) {
+		console.error("Login failed:", error);
+		alert("Login failed");
+	}
+};
 ---
 
 <Layout title="!Scarlet Web">

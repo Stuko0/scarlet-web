@@ -1,1 +1,0 @@
-const n="https://412bnmkw.brs.devtunnels.ms:8000/users",e=async(o,t)=>{try{const r=await fetch(`${n}/checkLogin`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:o,password:t})});if(!r.ok)throw new Error(`Error: ${r.statusText}`);return await r.json()}catch(r){throw console.error("Error logging in:",r),r}};export{e as checkLogin};

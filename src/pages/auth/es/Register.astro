@@ -1,6 +1,25 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import Header from "../../../components/globals/Header.astro";
+import Header from "../../../components/globals/es/Header.astro";
+import { registerUser } from "../../../services/users_services";
+
+const handleLogin = async (event) => {
+	event.preventDefault();
+	const form = event.target as HTMLFormElement;
+	const firstName = form.firstName.value;
+	const lastName = form.lastName.value;
+	const email = form.email.value;
+	const password = form.password.value;
+	try {
+		const response = await registerUser(firstName, lastName, email, password);
+		console.log("Register success:", response);
+		alert("Resgistrado");
+		window.location.href = "/";
+	} catch (error) {
+		console.error("Resgister failed:", error);
+		alert("Registro fallo");
+	}
+};
 ---
 
 <Layout title="!Scarlet Web">
@@ -46,7 +65,7 @@ import Header from "../../../components/globals/Header.astro";
                 </div>
             </div>
 
-            <form class="sm:p-8 p-4 w-full">
+            <form class="sm:p-8 p-4 w-full" id="register-form"> 
                 <div class="mb-12">
                     <h3
                         class="text-[#ea580c] text-3xl font-extrabold max-md:text-center font-titles"
@@ -57,22 +76,22 @@ import Header from "../../../components/globals/Header.astro";
 
                 <div class="grid lg:grid-cols-2 gap-6 font-titles">
                     <div>
-                        <label class="text-gray-800 text-sm mb-2 block" for="name"
+                        <label class="text-gray-800 text-sm mb-2 block" for="firstName"
                             >First Name</label
                         >
                         <input
-                            name="name"
+                            name="firstName"
                             type="text"
                             class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3 rounded-md outline-[#ea580c]"
                             placeholder="Enter name"
                         />
                     </div>
                     <div>
-                        <label class="text-gray-800 text-sm mb-2 block" for="lname"
+                        <label class="text-gray-800 text-sm mb-2 block" for="lastName"
                             >Last Name</label
                         >
                         <input
-                            name="lname"
+                            name="lastName"
                             type="text"
                             class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3 rounded-md outline-[#ea580c]"
                             placeholder="Enter lastname"
@@ -142,7 +161,7 @@ import Header from "../../../components/globals/Header.astro";
 
                 <div class="mt-6">
                     <button
-                        type="button"
+                        type="submit"
                         class="py-3 px-6 text-sm tracking-wide font-semibold rounded-md text-white bg-[#ea580c] hover:bg-[#ef580c] focus:outline-none transition-all"
                     >
                         Sign up
@@ -155,6 +174,31 @@ import Header from "../../../components/globals/Header.astro";
 					</p>
                 </div>
             </form>
+            <script>
+				document
+					.getElementById("register-form")
+					.addEventListener("submit", async (event) => {
+						event.preventDefault();
+						const form = event.target as HTMLFormElement;
+                        const firstName = form.firstName.value;
+                        const lastName = form.lastName.value;
+						const email = form.email.value;
+						const password = form.password.value;
+
+						import("../../../services/users_services.js").then(
+							({ registerUser }) => {
+								registerUser(firstName,lastName, email, password)
+									.then((response) => {
+										window.location.href =
+											"/dashboard/es/Dashboard";
+									})
+									.catch((error) => {
+										alert("Fallo el Registro");
+									});
+							},
+						);
+					});
+			</script>
         </div>
     </div>
 </Layout>
