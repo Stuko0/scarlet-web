@@ -1,6 +1,23 @@
 ---
-
+import Layout from "../../layouts/Layout.astro"
+import Sidebar from "../../components/dashboardComponents/base/Sidebar.astro"
+import HeaderDash from "../../components/dashboardComponents/base/HeaderDash.astro"
+import Resume from "../../components/dashboardComponents/index/Resume.astro"
+import Manage from "../../components/dashboardComponents/index/Manage.astro"
+import AreaChart from "../../components/dashboardComponents/index/AreaChart.astro"
+import AttendedFires from "../../components/dashboardComponents/index/AttendedFires.astro"
 ---
-<div class="h-screen flex flex-row flex-wrap">
-    
-</div>
+ <Layout title="!Scarlet Dashboard">
+     <Sidebar/>
+     <main class="min-h-screen">
+        <HeaderDash/>
+        <div class="p-6">
+            <Resume/>
+            <Manage/>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 md:w-[calc(100%-256px)] md:ml-64 w-full">
+                <AreaChart/>
+                <AttendedFires/>
+            </div>
+        </div>
+     </main>
+ </Layout>

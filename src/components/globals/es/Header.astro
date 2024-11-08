@@ -1,7 +1,7 @@
 ---
 import Hamburger from "../../buttons/Hamburger.astro"
 ---
-<div class="bg-[#f5ead6] w-full font-titles font-extrabold">
+<div class="bg-[#f5ead6] w-full font-titles font-extrabold z-50">
     <header class="pt-8 p-4 mx-auto max-w-screen-xl flex flex-col lg:flex-row items-center justify-between ">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
             <svg class="w-16 max-w-20 mr-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#fb5335"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5.926 20.574a7.26 7.26 0 0 0 3.039 1.511c.107.035.179-.105.107-.175-2.395-2.285-1.079-4.758-.107-5.873.693-.796 1.68-2.107 1.608-3.865 0-.176.18-.317.322-.211 1.359.703 2.288 2.25 2.538 3.515.394-.386.537-.984.537-1.511 0-.176.214-.317.393-.176 1.287 1.16 3.503 5.097-.072 8.19-.071.071 0 .212.072.177a8.761 8.761 0 0 0 3.003-1.442c5.827-4.5 2.037-12.48-.43-15.116-.321-.317-.893-.106-.893.351-.036.95-.322 2.004-1.072 2.707-.572-2.39-2.478-5.105-5.195-6.441-.357-.176-.786.105-.75.492.07 3.27-2.063 5.352-3.922 8.059-1.645 2.425-2.717 6.89.822 9.808z" fill="#fbae00"></path></g></svg>
@@ -65,7 +65,7 @@ import Hamburger from "../../buttons/Hamburger.astro"
         if (!button.contains(target) && !dropdown.contains(target)) {
         dropDiv.classList.remove("md:bg-[url('/primary.png')]", "md:bg-center", "md:bg-no-repeat", "md:bg-contain")
         aboutText.classList.remove('text-[#ea580c]', 'md:text-white');
-        dropIcon.classList.remove('fill-[#ffae27]');
+        dropIcon.classList.remove('fill-orange-300');
         dropdown.classList.add('hidden');
         }
     });
@@ -73,11 +73,11 @@ import Hamburger from "../../buttons/Hamburger.astro"
     dropDiv.addEventListener('mouseenter', () => {
         dropDiv.classList.remove("md:hover:bg-[url('/primary.png')]", "md:hover:bg-center", "md:hover:bg-no-repeat", "md:hover:bg-contain")
         aboutText.classList.add('text-[#ea580c]', 'md:text-white');
-        dropIcon.classList.add('fill-[#ffae27]');
+        dropIcon.classList.add('fill-orange-300');
     });
 
     dropDiv.addEventListener('mouseleave', () => {
         aboutText.classList.remove('text-[#ea580c]', 'md:text-white');
-        dropIcon.classList.remove('fill-[#ffae27]');
+        dropIcon.classList.remove('fill-orange-300');
     });
 </script>

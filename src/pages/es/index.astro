@@ -1,10 +1,15 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Header from "../../components/globals/es/Header.astro"
+import Header from '../../components/globals/es/Header.astro'
 import HeroWithImage from '../../components/indexComponents/es/HeroWithImage.astro';
 import Overview from '../../components/indexComponents/es/Overview.astro';
 import Objectives from '../../components/indexComponents/es/Objectives.astro';
 import Entities from '../../components/indexComponents/es/Entities.astro';
+import FirstStep from '../../components/indexComponents/es/appOverview/FirstStep.astro';
+import SecondStep from '../../components/indexComponents/es/appOverview/SecondStep.astro';
+import ThirdStep from '../../components/indexComponents/es/appOverview/ThirdStep.astro';
+import Footer from '../../components/globals/es/Footer.astro'
+import FAQ from '../../components/indexComponents/es/FAQ.astro';
 ---
 
 <Layout title="!Scarlet Web">
@@ -14,5 +19,10 @@ import Entities from '../../components/indexComponents/es/Entities.astro';
 		<Overview/>
 		<Objectives/>
 		<Entities/>
+		<FirstStep/>
+		<SecondStep/>
+		<ThirdStep/>
+		<FAQ/>
+		<Footer/>
 	</main>
 </Layout>
