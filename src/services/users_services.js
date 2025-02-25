@@ -1,4 +1,4 @@
-const apiURL = "https://412bnmkw.brs.devtunnels.ms:8000/users";
+const apiURL = "https://0hl39814.brs.devtunnels.ms:8000/users";
 
 export const registerUser = async (firstName, lastName, email, password) => {
     try {
