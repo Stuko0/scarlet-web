@@ -1,16 +1,114 @@
 ---
-import Bomberos from "../../../../public/Bomberos-Cochabamba.jpg"
-import Bomberos_Voluntarios from "../../../../public/Bomberos-Voluntarios-Cochabamba.jpg"
-import Bomberos_GEOS from "../../../../public/Bomberos-Voluntarios-GEOS-Cochabamba.jpg"
-import SAR from "../../../../public/SAR-Cochabamba.jpg"
-import EntitiesCard from "../../cards/EntitiesCard.astro"
-console.log("Entities")
 ---
-<div class="md:grid-cols-3 mb-20 md:mb-32 md:mr-8 md:ml-8 max-w-6xl ml-auto mr-auto lg:ml-auto lg:mr-auto">
-    <div class="flex flex-wrap gap-8 justify-center">
-        <EntitiesCard buttonText="Ver Institución" url="https://www.facebook.com/p/Bomberos-PolBol-Cochabamba-100064388964061/" title="Cuerpo de Bomberos" location="Cochabamba" imageSrc={Bomberos} imageSrcSet="https://i.ibb.co/ykLzGYP/Bomberos-Cochabamba.jpg" altText="Bomberos"/>
-        <EntitiesCard buttonText="Ver Institución" url="https://www.facebook.com/Bomberos.Voluntarios.Nataniel.Aguirre.Cochabamba/?locale=es_LA" title="Cuerpo de Bomberos Voluntarios" location="Cochabamba" imageSrc={Bomberos_Voluntarios} imageSrcSet="https://i.ibb.co/HnmCLsk/Bomberos-Voluntarios-Cochabamba.jpg" altText="Bomberos Voluntarios"/>
-        <EntitiesCard buttonText="Ver Institución" url="https://www.facebook.com/BomberosVoluntariosGeos/" title="Cuerpo de Bomberos GEOS" location="Cochabamba" imageSrc={Bomberos_GEOS} imageSrcSet="https://i.ibb.co/mD9HRxL/Bomberos-Voluntarios-GEOS-Cochabamba.jpg" altText="Bomberos GEOS"/>
-        <EntitiesCard buttonText="Ver Institución" url="https://sarbolivia.com/nosotros/" title="SAR" location="Cochabamba" imageSrc={SAR} imageSrcSet="https://i.ibb.co/gzh0hxN/SAR-Cochabamba.jpg" altText="SAR"/>
+<section class="px-8">
+    <div class="container !mx-auto text-center place-content-center grid">
+        <h1
+            class="block antialiased tracking-normal font-sans font-semibold my-4 !text-2xl !leading-snug lg:!text-3xl text-[#517b5b]"
+        >
+            Organizaciones que confian en nosotros
+        </h1>
+        <p
+            class="block antialiased font-sans text-xl font-normal leading-relaxed mx-auto max-w-5xl !text-gray-500 lg:px-8 mb-10"
+        >
+            Por nuestras caracteristicas y por el rendimiento ofrecido a bajo costo de mantenimiento.
+        </p>
+        <div class="flex flex-col md:flex-row gap-6 max-w-6xl mx-auto">
+            <div class="flex flex-col items-center justify-center gap-6">
+                <div
+                    class="relative flex flex-col bg-clip-border rounded-xl text-gray-700 bg-[#FAFAFA] px-10"
+                >
+                    <div class="p-6">
+                        <img
+                            src="https://www.material-tailwind.com/logos/logo-coinbase.svg"
+                            alt="logo"
+                            class="w-40"
+                        />
+                        <p
+                            class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500"
+                        >
+                            Cuerpo de Bomberos
+                        </p>
+                    </div>
+                </div>
+                <div
+                    class="relative flex flex-col bg-clip-border rounded-xl text-gray-700 bg-[#FAFAFA] px-10"
+                >
+                    <div class="p-6">
+                        <img
+                            src="https://www.material-tailwind.com/logos/logo-amazon.svg"
+                            alt="logo"
+                            class="w-40"
+                        />
+                        <p
+                            class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500"
+                        >
+                            Cuerpo de Bomberos Voluntarios
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="relative flex flex-col bg-clip-border rounded-xl text-gray-700 bg-[#FAFAFA] lg:px-10 justify-center max-w-[18rem] lg:max-w-lg"
+            >
+                <div class="p-6 text-center">
+                    <img
+                        src="https://www.material-tailwind.com/logos/logo-netflix.svg"
+                        alt="logo"
+                        class="w-40 mx-auto"
+                    />
+                    <p
+                        class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500 mb-4"
+                    >
+                        SAR
+                    </p>
+                    <p
+                        class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal lg:max-w-[16rem]"
+                    >
+                        “Entrego la aplicacion a los bomberos, para que ellos puedan tener un mejor control de los incendios en tiempo record"
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center justify-center gap-6">
+                <div
+                    class="relative flex flex-col bg-clip-border rounded-xl text-gray-700 bg-[#FAFAFA] px-10"
+                >
+                    <div class="p-6">
+                        <img
+                            src="https://www.material-tailwind.com/logos/logo-spotify.svg"
+                            alt="logo"
+                            class="w-40"
+                        />
+                        <p
+                            class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500"
+                        >
+                            Cuerpo de Bomberos GEOS
+                        </p>
+                    </div>
+                </div>
+                <div
+                    class="relative flex flex-col bg-clip-border rounded-xl text-gray-700 bg-[#FAFAFA] px-10"
+                >
+                    <div class="p-6">
+                        <img
+                            src="https://www.material-tailwind.com/logos/logo-google.svg"
+                            alt="logo"
+                            class="w-40"
+                        />
+                        <p
+                            class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500"
+                        >
+                            BEAR
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    <button
+        class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg  bg-[#ea580c] hover:bg-[#ffae27] border hover:border-gray-900 text-white mt-6 mx-auto flex cursor-pointer"
+        type="button"
+        data-ripple-dark="true"
+    >
+        Ver todas las organizaciones
+    </button>
+</section>
