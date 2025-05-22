@@ -1,8 +1,7 @@
 ---
-import Hamburger from "../../../components/buttons/Hamburger.astro"
 ---
 <div class="md:hidden z-50 fixed top-3 left-3">
-    <Hamburger id="hamburger-open" variant="grayHamburger"/>
+    <button id="hamburger-open">Hamburger</button>
 </div>
 <div class="hidden toggle md:flex flex-col" id="menu">
     <div class="fixed left-0 top-0 w-56 md:w-64 h-full bg-[#f1efec] p-4 border border-r-[#d1d5db] z-50 overflow-auto">
@@ -12,7 +11,7 @@ import Hamburger from "../../../components/buttons/Hamburger.astro"
                 <span class="text-lg font-titles font-bold text-black ml-3">!Scarlet</span>    
             </a>
             <div class="md:hidden ml-auto">
-                <Hamburger id="hamburger-close" variant="grayHamburger"/>
+                <button id="hamburger-close">Hamburger</button>
             </div>
         </div>
         <ul class="mt-4">
