@@ -22,7 +22,7 @@ export default defineConfig({
 
   output: 'static',
   integrations: [tailwindcss()],
-  adapter: vercel(),
+  adapter: vercel({runtime:'nodejs22.x'}),
 
   vite: {
     plugins: [tailwindcss()]
