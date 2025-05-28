@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import Frame from '../../../../../public/phone-qr.png'
+import Frame from '../../../../../public/images/phone-qr.png'
+import PrimaryButton from '../../../buttons/PrimaryButton.astro';
 ---
 
 <div class="flex flex-col justify-between max-w-xl px-4 mx-auto lg:pt-16 lg:flex-row md:px-8 lg:max-w-screen-xl">
@@ -21,12 +22,7 @@ import Frame from '../../../../../public/phone-qr.png'
         </p>
       </div>
       <div class="flex items-center">
-        <a
-          href="/"
-          class="inline-flex items-center justify-center h-12 px-6 mr-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-[#ea580c] hover:bg-[#ffae27] focus:shadow-outline focus:outline-none"
-        >
-          Descargar
-        </a>
+        <PrimaryButton py="4" mt="0" display="inline-flex" mx="0", mr="6">Descargar</PrimaryButton>
         <a href="/" aria-label="" class="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-[#ea580c]">Saber más</a>
       </div>
     </div>

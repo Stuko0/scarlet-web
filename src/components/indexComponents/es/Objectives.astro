@@ -1,9 +1,10 @@
 ---
 console.log("Objectives")
 import { Image } from 'astro:assets';
-import Monkey from "../../../../public/monkey-tunari.jpg"
-import Llamitas from "../../../../public/llamitas-tunari.jpg"
-import Cemento from "../../../../public/cemento-con-bigote.png"
+import Monkey from "../../../../public/images/monkey-tunari.jpg"
+import Llamitas from "../../../../public/images/llamitas-tunari.jpg"
+import Cemento from "../../../../public/images/cemento-con-bigote.png"
+import PrimaryButton from '../../buttons/PrimaryButton.astro';
 ---
 
 <article class="md:mt-[-50px] px-5 md:px-0 mb-20 md:mb-32 md:mr-8 md:ml-8 mx-auto lg:ml-auto lg:mr-auto">
@@ -19,7 +20,7 @@ import Cemento from "../../../../public/cemento-con-bigote.png"
                 <div class="pl-20 py-16 pr-20 text-left relative z-10">
                     <h1 class="inset-0 uppercase text-[#aacb6a] text-lg md:text-4xl leading-6 font-titles">el impacto</h1>
                     <p class="text-white my-5 text-sm md:text-base leading-6 font-body">De 2001 a 2023, Cochabamba perdió 289 kha de cobertura arbórea, lo que equivale a una disminución del 11% de la cobertura arbórea desde 2000.</p>
-                    <button><a href="https://www.globalforestwatch.org/dashboards/country/BOL/2/?dashboardPrompts=eyJzaG93UHJvbXB0cyI6dHJ1ZSwicHJvbXB0c1ZpZXdlZCI6WyJkYXNoYm9hcmRBbmFseXNlcyIsImRvd25sb2FkRGFzaGJvYXJkU3RhdHMiLCJzaGFyZVdpZGdldCJdLCJzZXR0aW5ncyI6eyJzaG93UHJvbXB0cyI6dHJ1ZSwicHJvbXB0c1ZpZXdlZCI6WyJkYXNoYm9hcmRBbmFseXNlcyIsImRvd25sb2FkRGFzaGJvYXJkU3RhdHMiLCJzaGFyZVdpZGdldCJdLCJzZXR0aW5ncyI6eyJzaG93UHJvbXB0cyI6dHJ1ZSwicHJvbXB0c1ZpZXdlZCI6W10sInNldHRpbmdzIjp7Im9wZW4iOmZhbHNlLCJzdGVwSW5kZXgiOjAsInN0ZXBzS2V5IjoiIn0sIm9wZW4iOnRydWUsInN0ZXBzS2V5IjoiZGFzaGJvYXJkQW5hbHlzZXMifSwic3RlcHNLZXkiOiIiLCJvcGVuIjpmYWxzZSwic3RlcEluZGV4IjowLCJmb3JjZSI6dHJ1ZX0sImZvcmNlIjp0cnVlfQ%3D%3D&lang=es_MX&location=WyJjb3VudHJ5IiwiQk9MIiwiMiJd&map=eyJjZW50ZXIiOnsibGF0Ijo0LjE1OTExNzkzMTcyMTcxNywibG5nIjotNzIuOTQwNjUwOTM5OTkwNjJ9LCJ6b29tIjo0LjE3MDg1MTI2NDY3NzAzMywiY2FuQm91bmQiOnRydWUsImRhdGFzZXRzIjpbXX0%3D&showMap=true&treeLossPct=eyJoaWdobGlnaHRlZCI6ZmFsc2V9">Ver más</a></button>
+                    <PrimaryButton mx="0"><a href="https://www.globalforestwatch.org/dashboards/country/BOL/2">Ver más</a></PrimaryButton>
                 </div>
             </div>
             <div class="w-full relative ">

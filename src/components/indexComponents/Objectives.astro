@@ -1,9 +1,10 @@
 ---
 console.log("Objectives")
 import { Image } from 'astro:assets';
-import Monkey from "../../../public/monkey-tunari.jpg"
-import Llamitas from "../../../public/llamitas-tunari.jpg"
-import Cemento from "../../../public/cemento-con-bigote.png"
+import Monkey from "../../../public/images/monkey-tunari.jpg"
+import Llamitas from "../../../public/images/llamitas-tunari.jpg"
+import Cemento from "../../../public/images/cemento-con-bigote.png"
+import PrimaryButton from '../buttons/PrimaryButton.astro';
 ---
 
 <article class="md:mt-[-50px] px-5 md:px-0 mb-20 md:mb-32 md:mr-8 md:ml-8 ml-auto mr-auto lg:ml-auto lg:mr-auto">
@@ -19,7 +20,7 @@ import Cemento from "../../../public/cemento-con-bigote.png"
                 <div class="pl-20 py-16 pr-20 text-left relative z-10">
                     <h1 class="inset-0 uppercase text-[#aacb6a] text-lg md:text-4xl leading-6 font-titles">the impact</h1>
                     <p class="text-white my-5 text-sm md:text-base leading-6 font-body">Lorem Ipsum Dolor Sit Amet. Lorem Ipsum Dolor Sit Amet. Lorem Ipsum Dolor Sit Amet.</p>
-                    <button>Button</button>
+                    <PrimaryButton mx="0"><a href="https://www.globalforestwatch.org/dashboards/country/BOL/2">See more</a></PrimaryButton>
                 </div>
             </div>
             <div class="w-full relative ">

@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Header from "../../../components/globals/es/Header.astro";
+import Footer from '../../../components/globals/es/Footer.astro'
 import { registerUser } from "../../../services/users_services";
 
 const handleLogin = async (event) => {
@@ -201,4 +202,5 @@ const handleLogin = async (event) => {
 			</script>
         </div>
     </div>
+  <Footer></Footer>
 </Layout>

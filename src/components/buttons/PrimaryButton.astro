@@ -1,0 +1,11 @@
+---
+const {py = 3, mt=6, display="flex", mx="auto", mr} = Astro.props;
+---
+<button
+        class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs px-6 rounded-lg  bg-[#ea580c] hover:bg-[#ffae27] border hover:border-gray-900 text-white mx-auto cursor-pointer"
+        style={`padding-top: ${py*0.25}rem; padding-bottom: ${py*0.25}rem;margin-top: ${mt*0.25}rem; display: ${display}; margin-inline:${mx}; margin-right:${mr ? mr*0.25 + 'rem' : 'auto'};`}
+        type="button"
+        data-ripple-dark="true"
+    >
+        <slot/>
+</button>

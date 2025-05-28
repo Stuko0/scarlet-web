@@ -1,0 +1,137 @@
+---
+import LoginModal from '../pages/auth/es/Login.astro';
+import RegisterModal from '../pages/auth/es/Register.astro';
+---
+
+<div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden transition-opacity duration-300">
+  <div class="fixed inset-0 flex items-center justify-center p-4">
+    <!-- Contenedor para animación -->
+    <div id="modal-container" class="relative transform transition-all duration-300">
+      <slot/>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // Funciones globales para controlar los modales
+  window.openLoginModal = () => {
+    const backdrop = document.getElementById('modal-backdrop');
+    const container = document.getElementById('modal-container');
+    
+    // Limpiar y agregar el modal de login con animación
+    container.innerHTML = '';
+    container.insertAdjacentHTML('beforeend', `
+      <div class="animate-fade-in-scale">
+        ${document.getElementById('login-modal-template').innerHTML}
+      </div>
+    `);
+    
+    backdrop.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.openRegisterModal = () => {
+    const backdrop = document.getElementById('modal-backdrop');
+    const container = document.getElementById('modal-container');
+    
+    // Limpiar y agregar el modal de registro con animación
+    container.innerHTML = '';
+    container.insertAdjacentHTML('beforeend', `
+      <div class="animate-fade-in-scale">
+        ${document.getElementById('register-modal-template').innerHTML}
+      </div>
+    `);
+    
+    backdrop.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeModal = () => {
+    const backdrop = document.getElementById('modal-backdrop');
+    backdrop.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+
+  window.switchToLoginModal = () => {
+    const container = document.getElementById('modal-container');
+    container.innerHTML = '';
+    container.insertAdjacentHTML('beforeend', `
+      <div class="animate-slide-in-right">
+        ${document.getElementById('login-modal-template').innerHTML}
+      </div>
+    `);
+  };
+
+  window.switchToRegisterModal = () => {
+    const container = document.getElementById('modal-container');
+    container.innerHTML = '';
+    container.insertAdjacentHTML('beforeend', `
+      <div class="animate-slide-in-left">
+        ${document.getElementById('register-modal-template').innerHTML}
+      </div>
+    `);
+  };
+
+  // Cerrar modal al hacer clic en el fondo
+  document.getElementById('modal-backdrop')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      window.closeModal();
+    }
+  });
+</script>
+
+<!-- Templates para los modales (se renderizan pero no se muestran) -->
+<div id="login-modal-template" class="hidden">
+  <LoginModal />
+</div>
+
+<div id="register-modal-template" class="hidden">
+  <RegisterModal />
+</div>
+
+<style is:global>
+  .animate-fade-in-scale {
+    animation: fadeInScale 0.3s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.3s ease-out forwards;
+  }
+  
+  .animate-slide-in-left {
+    animation: slideInLeft 0.3s ease-out forwards;
+  }
+  
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>

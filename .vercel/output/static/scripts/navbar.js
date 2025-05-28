@@ -1,4 +1,3 @@
-// public/scripts/navbar.js
 document.addEventListener('DOMContentLoaded', () => {
   // Hamburguesa (mobile)
   const hamburgerButton = document.querySelector('[data-collapse-toggle="navbar-dropdown"]');
