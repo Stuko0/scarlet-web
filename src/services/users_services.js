@@ -2,10 +2,11 @@ const apiURL = "https://2jhlkbgj.brs.devtunnels.ms:8000/users";
 
 export const registerUser = async (firstName, lastName, email, password) => {
     try {
-        const response = await fetch(`${apiURL}/register`, {
+        const response = await fetch(`${apiURL}/user.v1.UserService/CreateUserByEmail`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Connect-Protocol-Version': '1',
             },
             body: JSON.stringify({
                 name: firstName,
