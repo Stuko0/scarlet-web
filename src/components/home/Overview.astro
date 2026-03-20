@@ -1,0 +1,88 @@
+---
+import Map from "../../components/maps/Map.astro";
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<article class="bg-[#f1efec] pt-8 pb-12 md:pb-32 px-5 md:px-0">
+  <div class="md:max-w-6xl max-w-lg mx-auto md:mr-8 md:ml-8 ml-auto mr-auto lg:ml-auto lg:mr-auto">
+    <div class="grid md:grid-cols-[55%_45%] gap-6">
+      <div class="max-w-4xl">
+        <div class="border-b-2 border-r-2 border-b-[#aacb6a] border-r-[#aacb6a] mb-5 md:mb-8 inline-flex">
+          <h1 class="pr-5 pb-3 font-semibold text-sm md:text-lg text-[#1a2d1f] font-titles">
+            {t('overview.title')}
+          </h1>
+        </div>
+        <h2 class="text-[#517b5b] text-3xl font-semibold mb-5 leading-10 font-titles">
+          {t('overview.subtitle')}
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                {t('overview.risk.species.title')}
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                {t('overview.risk.species.desc')}
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                {t('overview.risk.forest.title')}
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                {t('overview.risk.forest.desc')}
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                {t('overview.carbon.title')}
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">{t('overview.carbon.desc')}
+                <button
+                  type="button"
+                  class="ml-4 bg-white text-xs border-2 border-[#ea580c] py-[1px] px-[6px] rounded-full relative before:content-[attr(data-tip)] before:absolute before:px-3 before:py-2 before:left-1/2 before:-top-3 before:w-max before:max-w-xs before:-translate-x-1/2 before:-translate-y-full before:bg-gray-500 before:text-white before:rounded-md before:opacity-0 before:pointer-events-none before:transition-all after:absolute after:left-1/2 after:-top-3 after:h-0 after:w-0 after:-translate-x-1/2 after:border-8 after:border-t-gray-700 after:border-l-transparent after:border-b-transparent after:border-r-transparent after:opacity-0 after:pointer-events-none after:transition-all hover:before:opacity-100 hover:after:opacity-100"
+                  data-tip={t('overview.carbon.tooltip')}
+                >
+                  ?
+                </button>
+              </p>
+              
+            </div>
+            <p class="pl-6 text-gray-500 text-sm pt-3 font-medium font-body">
+              {t('overview.carbon.note')}
+            </p>
+          </div>
+          <div>
+            <div class="mt-4 pl-4 md:pl-5 border-l-2 border-l-[#aacb6a]">
+              <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 font-titles">
+                {t('overview.alerts.title')}
+              </h3>
+              <p class="text-gray-500 text-sm md:text-lg font-medium font-body">
+                {t('overview.alerts.desc')}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-base md:text-lg font-bold text-gray-600 mb-2 uppercase font-titles">
+            {t('overview.loss.title')}
+          </h3>
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden p-1">
+            <div class="relative h-6 flex items-center justify-center">
+              <div class="absolute top-0 bottom-0 left-0 rounded-lg w-[11%] bg-[#ea5a0c8f]"></div>
+              <div class="relative text-red-900 font-medium text-sm font-titles">{t('overview.loss.desc')}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Map/>
+    </div>
+  </div>
+</article>

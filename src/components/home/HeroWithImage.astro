@@ -1,0 +1,285 @@
+---
+import Incendio_Tunari_2017 from "../../../public/images/incendio-tunari-2017.jpg";
+import Incendio_Tunari_2019 from "../../../public/images/incendio-tunari-2019.jpg";
+import Incendio_Tunari_2019_2 from "../../../public/images/incendio-tunari-2019-2.jpg";
+import Incendio_Tunari_2023 from "../../../public/images/incendio-tunari-2023.jpg";
+import { Image } from "astro:assets";
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const slides = [
+  {
+    image: Incendio_Tunari_2017,
+    title: t('hero.slide1.title'),
+    subtitle: t('hero.slide1.subtitle'),
+    description: t('hero.slide1.desc'),
+    primaryButton: { text: t('hero.slide1.btn1'), url: "#" },
+    secondaryButton: {
+      text: t('hero.slide1.btn2'),
+      url: "https://www.lostiempos.com/actualidad/local/20170917/cochabamba-zonas-mas-incendios",
+    },
+  },
+  {
+    image: Incendio_Tunari_2019,
+    title: t('hero.slide2.title'),
+    subtitle: t('hero.slide2.subtitle'),
+    description: t('hero.slide2.desc'),
+    primaryButton: { text: t('hero.slide1.btn1'), url: "#" },
+    secondaryButton: {
+      text: t('hero.slide1.btn2'),
+      url: "https://www.la-epoca.com.bo/2019/09/03/incendios-destruyeron-casi-94-hectareas-forestales-de-parque-tunari-de-cochabamba/",
+    },
+  },
+  {
+    image: Incendio_Tunari_2019_2,
+    title: t('hero.slide3.title'),
+    subtitle: t('hero.slide3.subtitle'),
+    description: t('hero.slide3.desc'),
+    primaryButton: { text: t('hero.slide1.btn1'), url: "#" },
+    secondaryButton: {
+      text: t('hero.slide1.btn2'),
+      url: "https://www.noticiasfides.com/nacional/sociedad/cochabamba-reportan-incendio-de-gran-magnitud-en-el-parque-tunari-401158",
+    },
+  },
+  {
+    image: Incendio_Tunari_2023,
+    title: t('hero.slide4.title'),
+    subtitle: t('hero.slide4.subtitle'),
+    description: t('hero.slide4.desc'),
+    primaryButton: { text: t('hero.slide1.btn1'), url: "#" },
+    secondaryButton: { text: t('hero.slide1.btn2'), url: "#" },
+  },
+];
+export const prerender = true;
+---
+
+<div id="noticias" class="hero-slider relative w-full h-[91dvh] overflow-hidden">
+  <div class="slides-container flex transition-transform duration-500 ease-in-out h-full">
+    {slides.map((slide, index) => (
+      <div class="slide flex-none w-full h-full relative">
+        <div class="absolute inset-0">
+          <Image 
+            src={slide.image} 
+            alt="" 
+            class="w-full h-full object-cover" 
+            draggable="false" 
+            loading={index === 0 ? "eager" : "lazy"}
+          />
+          <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+        </div>
+        
+        <div class="absolute inset-0 flex items-center">
+          <div class="container mx-auto px-6 lg:px-12 z-10">
+            <div class="max-w-xl">
+              <h2 class="text-5xl md:text-5xl lg:text-6xl text-white font-medium tracking-wider mb-4">{slide.title}</h2>
+              <p class="text-xl md:text-xl lg:text-xl font-bold text-white/80 mb-1">{slide.subtitle}</p>
+              <p class="text-sm md:text-base text-white/80 mb-8 max-w-md">{slide.description}</p>
+              <div class="flex flex-wrap gap-4">
+                <a 
+                  href={slide.primaryButton.url} 
+                  class="inline-block bg-[#ea5a0c23] hover:bg-[#ea580c] text-white text-xs tracking-wider font-medium py-3 px-6 rounded-md transition-colors duration-300"
+                >
+                  {slide.primaryButton.text}
+                </a>
+                <a 
+                  href={slide.secondaryButton.url} 
+                  class="inline-block bg-transparent hover:bg-[#ea5a0cb9] text-white border border-white text-xs tracking-wider font-medium py-3 px-6 rounded-md transition-colors duration-300"
+                >
+                  {slide.secondaryButton.text}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Navigation Arrows -->
+  <button class="nav-arrow prev absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/10 hover:bg-white/25 rounded-full p-2 transition-colors z-20">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  </button>
+  <button class="nav-arrow next absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/10 hover:bg-white/25 rounded-full p-2 transition-colors z-20">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-white">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+    </svg>
+  </button>
+
+  <!-- Indicators -->
+  <div class="indicators absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+    {slides.map((_, i) => (
+      <button 
+        class="indicator w-12 h-1.5 bg-white/40 hover:bg-white/60 transition-all duration-300" 
+        data-index={i}
+        aria-label={`Go to slide ${i + 1}`}
+      />
+    ))}
+  </div>
+</div>
+
+<script>
+  let currentIndex = 0;
+  const slides = document.querySelector('.slides-container') as HTMLElement;
+  const slideElements = document.querySelectorAll('.slide');
+  const indicators = document.querySelectorAll('.indicator');
+  const prevButton = document.querySelector('.nav-arrow.prev');
+  const nextButton = document.querySelector('.nav-arrow.next');
+  
+  let isDragging = false;
+  let startPos = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+  let animationID;
+  let autoSlideInterval;
+  
+  // Set slide position based on index
+  function setPositionByIndex() {
+    currentTranslate = currentIndex * -slides.clientWidth;
+    prevTranslate = currentTranslate;
+    setSliderPosition();
+  }
+  
+  // Update slider position
+  function setSliderPosition() {
+    slides.style.transform = `translateX(${currentTranslate}px)`;
+  }
+  
+  // Update indicators
+  function updateIndicators() {
+    indicators.forEach((indicator, index) => {
+      if (index === currentIndex) {
+        indicator.classList.add('bg-white');
+        indicator.classList.remove('bg-white/40');
+      } else {
+        indicator.classList.remove('bg-white');
+        indicator.classList.add('bg-white/40');
+      }
+    });
+  }
+  
+  // Go to specific slide
+  function goToSlide(index) {
+    currentIndex = index;
+    setPositionByIndex();
+    updateIndicators();
+    resetAutoSlide();
+  }
+  
+  // Next slide
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % slideElements.length;
+    setPositionByIndex();
+    updateIndicators();
+    resetAutoSlide();
+  }
+  
+  // Previous slide
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + slideElements.length) % slideElements.length;
+    setPositionByIndex();
+    updateIndicators();
+    resetAutoSlide();
+  }
+  
+  // Auto slide function
+  function autoSlide() {
+    nextSlide();
+  }
+  
+  // Reset auto slide timer
+  function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    autoSlideInterval = setInterval(autoSlide, 5000);
+  }
+  
+  // Touch start event
+  function touchStart(event) {
+    isDragging = true;
+    startPos = getPositionX(event);
+    animationID = requestAnimationFrame(animation);
+  }
+  
+  // Touch end event
+  function touchEnd() {
+    isDragging = false;
+    cancelAnimationFrame(animationID);
+    const movedBy = currentTranslate - prevTranslate;
+    
+    if (movedBy < -100 && currentIndex < slideElements.length - 1) {
+      currentIndex++;
+    } else if (movedBy > 100 && currentIndex > 0) {
+      currentIndex--;
+    }
+    
+    setPositionByIndex();
+    updateIndicators();
+    resetAutoSlide();
+  }
+  
+  // Touch move event
+  function touchMove(event) {
+    if (isDragging) {
+      const currentPosition = getPositionX(event);
+      currentTranslate = prevTranslate + currentPosition - startPos;
+      setSliderPosition();
+    }
+  }
+  
+  // Get position X
+  function getPositionX(event) {
+    return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+  }
+  
+  // Animation
+  function animation() {
+    setSliderPosition();
+    if (isDragging) requestAnimationFrame(animation);
+  }
+  
+  // Handle window resize
+  function handleResize() {
+    setPositionByIndex();
+  }
+  
+  // Initialize slider
+  function initSlider() {
+    // Add indicator click events
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => goToSlide(index));
+    });
+    
+    // Add navigation button events
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+    
+    // Add touch events
+    slides.addEventListener('touchstart', touchStart);
+    slides.addEventListener('touchend', touchEnd);
+    slides.addEventListener('touchmove', touchMove);
+    
+    // Add mouse events
+    slides.addEventListener('mousedown', touchStart);
+    slides.addEventListener('mouseup', touchEnd);
+    slides.addEventListener('mouseleave', touchEnd);
+    slides.addEventListener('mousemove', touchMove);
+    
+    // Add resize event
+    window.addEventListener('resize', handleResize);
+    
+    // Set initial state
+    updateIndicators();
+    resetAutoSlide();
+    
+    // Prevent drag behavior on images
+    document.querySelectorAll('.slide img').forEach(img => {
+      img.addEventListener('dragstart', (e) => e.preventDefault());
+    });
+  }
+  
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', initSlider);
+</script>

@@ -18,12 +18,18 @@ const {
     <div class="mb-3 md:mb-9 relative overflow-hidden h-[400px] w-[300px]">
       <picture class="h-full w-full">
         <source srcset={imageSrcSet} type="image/jpg" />
-        <Image
-          src={imageSrc}
-          alt={altText}
-          loading="lazy"
-          class="object-cover w-full h-full block transform transition duration-500 hover:scale-105"
-        />
+        {
+          typeof imageSrc === 'string' ? (
+            <img src={imageSrc} alt={altText} loading="lazy" class="object-contain w-full h-full block transform transition duration-500 hover:scale-105 p-6" />
+          ) : (
+            <Image
+              src={imageSrc}
+              alt={altText}
+              loading="lazy"
+              class="object-cover w-full h-full block transform transition duration-500 hover:scale-105"
+            />
+          )
+        }
       </picture>
     </div>
     <div class="box-border">

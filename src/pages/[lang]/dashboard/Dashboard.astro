@@ -1,0 +1,37 @@
+---
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'fr' } },
+    { params: { lang: 'pt' } },
+    { params: { lang: 'br' } },
+  ];
+}
+
+import Layout from "../../../layouts/Layout.astro"
+import Sidebar from "../../../components/dashboard/base/Sidebar.astro"
+import HeaderDash from "../../../components/dashboard/base/HeaderDash.astro"
+import Resume from "../../../components/dashboard/index/Resume.astro"
+import Manage from "../../../components/dashboard/index/Manage.astro"
+import AreaChart from "../../../components/dashboard/index/AreaChart.astro"
+import AttendedFires from "../../../components/dashboard/index/AttendedFires.astro"
+import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+ <Layout title="!Scarlet Dashboard">
+     <Sidebar/>
+     <main class="min-h-screen">
+        <HeaderDash/>
+        <div class="p-6">
+            <Resume/>
+            <Manage/>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 md:w-[calc(100%-256px)] md:ml-64 w-full">
+                <AreaChart/>
+                <AttendedFires/>
+            </div>
+        </div>
+     </main>
+ </Layout>

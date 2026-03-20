@@ -1,0 +1,91 @@
+---
+import PrimaryButton from "../buttons/PrimaryButton.astro";
+import EntitiesCard from "../cards/EntitiesCard.astro";
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+<section id="contactos" class="px-8 mt-10 md:mt-20">
+    <div class="container !mx-auto text-center place-content-center grid">
+        <h1 class="block antialiased tracking-normal font-sans font-semibold my-4 !text-2xl !leading-snug lg:!text-3xl text-[#517b5b]">
+            Organizaciones que confian en nosotros
+        </h1>
+        <p class="block antialiased font-sans text-xl font-normal leading-relaxed mx-auto max-w-5xl !text-gray-500 lg:px-8 mb-14">
+            Por nuestras caracteristicas y por el rendimiento ofrecido a bajo costo de mantenimiento.
+        </p>
+        
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-12 max-w-7xl mx-auto mb-12 justify-center items-center lg:items-center">
+            
+            <!-- Columna Izquierda: 2 tarjetas -->
+            <div class="flex flex-col items-center justify-center gap-6 lg:gap-12">
+                <div class="bg-[#FAFAFA] rounded-xl shadow-sm p-4 w-full flex justify-center hover:shadow-md transition-shadow">
+                    <EntitiesCard 
+                      title="Cuerpo de Bomberos" 
+                      location="Cochabamba" 
+                      imageSrc="https://scontent.fcbb2-1.fna.fbcdn.net/v/t39.30808-6/494196482_4011833699090923_4068493259827665432_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=53a332&_nc_ohc=8GPbXFuAMCAQ7kNvwEWHHnL&_nc_oc=AdoSrX-yE7X9BUytIUDBjVlk_DSOhWVie3clBQBc8TqntK7xN37w6IB2jgneYMhEejbs-F5boiwd-XcbRBNJivar&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=q6WLOLcpMG3fNpwvX6jAuA&_nc_ss=7a30f&oh=00_AfzChRET_bNT1lM2V3oGqErppy3LZ62hoPQg9cfUawvamg&oe=69C3A502" 
+                      imageSrcSet="https://scontent.fcbb2-1.fna.fbcdn.net/v/t39.30808-6/494196482_4011833699090923_4068493259827665432_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=53a332&_nc_ohc=8GPbXFuAMCAQ7kNvwEWHHnL&_nc_oc=AdoSrX-yE7X9BUytIUDBjVlk_DSOhWVie3clBQBc8TqntK7xN37w6IB2jgneYMhEejbs-F5boiwd-XcbRBNJivar&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=q6WLOLcpMG3fNpwvX6jAuA&_nc_ss=7a30f&oh=00_AfzChRET_bNT1lM2V3oGqErppy3LZ62hoPQg9cfUawvamg&oe=69C3A502"
+                      url="#"
+                      buttonText="Visitar"
+                    />
+                </div>
+                <div class="bg-[#FAFAFA] rounded-xl shadow-sm p-4 w-full flex justify-center hover:shadow-md transition-shadow">
+                    <EntitiesCard 
+                      title="Bomberos Voluntarios" 
+                      location="Bolivia" 
+                      imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKYC4_-YHJWbCjc7TPJlYBr8lFBvw5o9Vb3WuwNzR2FPdI6vvELh3IIruUeAv27xLXZHY&usqp=CAU" 
+                      imageSrcSet="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKYC4_-YHJWbCjc7TPJlYBr8lFBvw5o9Vb3WuwNzR2FPdI6vvELh3IIruUeAv27xLXZHY&usqp=CAU"
+                      url="#"
+                      buttonText="Visitar"
+                    />
+                </div>
+            </div>
+            
+            <!-- Columna Central: 1 tarjeta centrada -->
+            <div class="flex flex-col items-center justify-center gap-6">
+                <div class="bg-[#FAFAFA] rounded-xl shadow-sm p-4 lg:p-8 w-full flex flex-col items-center hover:shadow-md transition-shadow">
+                    <EntitiesCard 
+                      title="SAR Bolivia" 
+                      location="Nacional" 
+                      imageSrc="https://sarbolivia.com/wp-content/uploads/2023/01/Logo-SAR-Bolivia.png" 
+                      imageSrcSet="https://sarbolivia.com/wp-content/uploads/2023/01/Logo-SAR-Bolivia.png"
+                      url="#"
+                      buttonText="Visitar"
+                    />
+                    <p class="block antialiased font-sans text-sm md:text-base leading-relaxed text-blue-gray-900 font-medium max-w-[300px] mt-6 mx-auto italic text-gray-700">
+                        “Entrego la aplicacion a los bomberos, para que ellos puedan tener un mejor control de los incendios en tiempo record"
+                    </p>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: 2 tarjetas -->
+            <div class="flex flex-col items-center justify-center gap-6 lg:gap-12">
+                <div class="bg-[#FAFAFA] rounded-xl shadow-sm p-4 w-full flex justify-center hover:shadow-md transition-shadow">
+                    <EntitiesCard 
+                      title="Bomberos GEOS" 
+                      location="Cochabamba" 
+                      imageSrc="https://pbs.twimg.com/profile_images/1717748622/logookfin_200x200.png" 
+                      imageSrcSet="https://pbs.twimg.com/profile_images/1717748622/logookfin_200x200.png"
+                      url="#"
+                      buttonText="Visitar"
+                    />
+                </div>
+                <div class="bg-[#FAFAFA] rounded-xl shadow-sm p-4 w-full flex justify-center hover:shadow-md transition-shadow">
+                    <EntitiesCard 
+                      title="BEAR" 
+                      location="Bolivia" 
+                      imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0Injx4VaRsReF_572MnafnZJjRnko7ihpiA&s" 
+                      imageSrcSet="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0Injx4VaRsReF_572MnafnZJjRnko7ihpiA&s"
+                      url="#"
+                      buttonText="Visitar"
+                    />
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="mb-10 mt-6">
+            <PrimaryButton>Ver todas las organizaciones</PrimaryButton>
+        </div>
+    </div>
+</section>
