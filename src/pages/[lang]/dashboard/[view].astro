@@ -23,6 +23,13 @@ import Sidebar from "../../../components/dashboard/base/Sidebar.astro"
 import HeaderDash from "../../../components/dashboard/base/HeaderDash.astro"
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 
+import GraphicElementView from "../../../components/dashboard/views/GraphicElementView.astro"
+import FileManagerView from "../../../components/dashboard/views/FileManagerView.astro"
+import FormManagerView from "../../../components/dashboard/views/FormManagerView.astro"
+import WebFunctionView from "../../../components/dashboard/views/WebFunctionView.astro"
+import PanelView from "../../../components/dashboard/views/PanelView.astro"
+import Modal from "../../../components/dashboard/modals/Modal.astro"
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const { view } = Astro.params;
@@ -44,48 +51,81 @@ const titleMap = {
 
 const viewTitle = titleMap[view] || view;
 
+const categoryMap = {
+    'panel-entidades': 'Paneles',
+    'mantenimiento': 'Elementos Gráficos',
+    'error-404': 'Elementos Gráficos',
+    'error-500': 'Elementos Gráficos',
+    'formularios': 'Elementos Gráficos',
+    'archivos': 'Elementos Gráficos',
+    'olvido-contrasena': 'Funciones Web',
+    'restablecer-contrasena': 'Funciones Web',
+    'equipos': 'Funciones Web',
+    'entidades': 'Funciones Web',
+    'tareas': 'Funciones Web',
+    'settings': 'Configuración'
+};
+const category = categoryMap[view] || 'Panel';
+const breadcrumbs = [
+    { label: 'Panel', href: `/${lang}/dashboard/Dashboard` },
+    { label: category, href: '#' },
+    { label: viewTitle }
+];
+
 const isWebFunction = ['equipos', 'entidades', 'tareas', 'olvido-contrasena', 'restablecer-contrasena', 'settings'].includes(view);
 const isGraphicElement = ['mantenimiento', 'error-404', 'error-500'].includes(view);
 const isFormManager = ['formularios'].includes(view);
 const isFileManager = ['archivos'].includes(view);
 const isPanel = ['panel-entidades'].includes(view);
+
+const descMap = {
+    file: 'Gestiona, comparte y organiza archivos multimedia.',
+    form: 'Diseña cuestionarios y recopila respuestas en vivo.',
+    default: `Gestión y configuración de la interfaz para ${viewTitle.toLowerCase()}`
+};
+const description = isFileManager ? descMap.file : isFormManager ? descMap.form : descMap.default;
 ---
 
 <Layout title={`!Scarlet Dashboard - ${viewTitle}`}>
      <Sidebar />
      <main class="min-h-screen bg-[#f8f9fa] md:ml-[16rem]">
-        <HeaderDash/>
-        <div class="p-4 md:p-8 flex flex-col flex-1 min-h-[calc(100vh-70px)]">
+        <HeaderDash breadcrumbs={breadcrumbs} />
+        <div class="p-4 md:p-8 pt-16 flex flex-col flex-1 min-h-[calc(100vh-70px)]">
             
             <div class="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div>
                    <h1 class="text-2xl font-bold font-titles text-gray-800">{viewTitle}</h1>
-                   <p class="text-sm text-gray-500 mt-1">{isFileManager ? 'Gestiona, comparte y organiza archivos multimedia.' : isFormManager ? 'Diseña cuestionarios y recopila respuestas en vivo.' : `Gestión y configuración de la interfaz para ${viewTitle.toLowerCase()}`}</p>
+                   <p class="text-sm text-gray-500 mt-1">{description}</p>
                 </div>
-                <!-- Action buttons based on view -->
                 {isWebFunction && (
-                   <button class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
+                   <button data-modal-open="modal-new-record" class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
                       + Nuevo Registro
                    </button>
                 )}
                 {isGraphicElement && (
-                   <button class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
-                      <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                      Guardar Diseño
-                   </button>
+                   <div class="flex gap-3">
+                       <button id="btn-preview" class="bg-white border text-gray-700 hover:bg-gray-50 px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
+                          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                          Vista Previa
+                       </button>
+                       <button class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
+                          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                          Guardar Diseño
+                       </button>
+                   </div>
                 )}
                 {isFormManager && (
-                   <button class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
+                   <button data-modal-open="modal-new-form" class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
                       + Crear Formulario
                    </button>
                 )}
                 {isFileManager && (
                    <div class="flex gap-3">
-                       <button class="bg-white border text-gray-700 hover:bg-gray-50 px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
+                       <button data-modal-open="modal-new-folder" class="bg-white border text-gray-700 hover:bg-gray-50 px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
                           <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
                           Nueva Carpeta
                        </button>
-                       <button class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
+                       <button data-modal-open="modal-upload-files" class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2.5 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center justify-center min-w-max">
                           <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                           Subir Archivos
                        </button>
@@ -93,377 +133,154 @@ const isPanel = ['panel-entidades'].includes(view);
                 )}
             </div>
 
-            {/* MOCKUP: ELEMENTOS GRAFICOS (Drag & Drop Builder) */}
-            {isGraphicElement && (
-                <div class="flex-1 flex flex-col xl:flex-row gap-6">
-                    <!-- Toolbox Sidebar -->
-                    <div class="w-full xl:w-64 bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col h-fit">
-                        <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Elementos GUI</h3>
-                        <div class="space-y-3">
-                            <div class="p-3 border border-gray-200 rounded-md bg-white flex items-center cursor-move hover:border-[#ea580c] hover:shadow-sm transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
-                                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
-                                <span class="text-sm font-medium text-gray-700">Bloque de Texto</span>
-                            </div>
-                            <div class="p-3 border border-gray-200 rounded-md bg-white flex items-center cursor-move hover:border-[#ea580c] hover:shadow-sm transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
-                                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <span class="text-sm font-medium text-gray-700">Imagen Destacada</span>
-                            </div>
-                            <div class="p-3 border border-gray-200 rounded-md bg-white flex items-center cursor-move hover:border-[#ea580c] hover:shadow-sm transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
-                                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span class="text-sm font-medium text-gray-700">Icono Vectorial</span>
-                            </div>
-                            <div class="p-3 border border-gray-200 rounded-md bg-white flex items-center cursor-move hover:border-[#ea580c] hover:shadow-sm transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
-                                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                <span class="text-sm font-medium text-gray-700">Botón Interactivo</span>
-                            </div>
-                        </div>
-                        
-                        <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-8 mb-4">Estructura</h3>
-                        <div class="grid grid-cols-2 gap-2">
-                           <div class="h-12 border border-gray-200 rounded bg-gray-50 flex items-center justify-center cursor-pointer hover:border-[#ea580c]">
-                               <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
-                           </div>
-                           <div class="h-12 border border-gray-200 rounded bg-gray-50 flex items-center justify-center cursor-pointer hover:border-[#ea580c]">
-                               <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 3h18v18H3z"></path></svg>
-                           </div>
-                        </div>
-                    </div>
-
-                    <!-- Canvas Builder -->
-                    <div class="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 p-2 md:p-6 flex flex-col relative overflow-hidden">
-                        <div class="absolute top-4 left-6 text-xs font-bold text-gray-300">LIENZO DE EDICIÓN</div>
-                        <div class="flex-1 mt-6 border-2 border-dashed border-gray-300 rounded-xl bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-gray-50/50 flex flex-col items-center justify-center p-8 gap-6 min-h-[500px]">
-                            
-                            <!-- Mock Drag&Drop Layout Example -->
-                            <div class="w-full max-w-lg h-64 border-2 border-dashed border-blue-400 bg-blue-50/80 rounded-lg flex flex-col items-center justify-center relative group transition-colors hover:bg-blue-100">
-                                <div class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer shadow-md transition-opacity">✕</div>
-                                <svg class="w-16 h-16 text-blue-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <span class="text-blue-500 text-sm font-semibold tracking-wide">CAJA DE IMAGEN PRINCIPAL</span>
-                                <span class="text-blue-400 text-xs mt-1">Arrastra tu gráfico vectorial o fotografía aquí</span>
-                            </div>
-                            
-                            <div class="w-full max-w-lg h-24 border-2 border-dashed border-green-400 bg-green-50/80 rounded-lg flex flex-col items-center justify-center relative group transition-colors hover:bg-green-100">
-                                <div class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer shadow-md transition-opacity">✕</div>
-                                <div class="absolute -top-3 -left-3 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer shadow-md transition-opacity">
-                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                                </div>
-                                <span class="text-green-600 font-bold font-titles text-xl">{viewTitle.toUpperCase()}</span>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Properties Sidebar -->
-                    <div class="w-full xl:w-80 bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col h-fit">
-                        <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-5">Personalizador</h3>
-                        <form class="space-y-6">
-                            <!-- Upload Box Mock -->
-                            <div class="bg-gray-50 p-4 border rounded-lg">
-                                <label class="block text-xs font-semibold text-gray-700 mb-2">Icono / Imagen del Módulo</label>
-                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-[#ea580c] transition-colors cursor-pointer bg-white">
-                                    <div class="space-y-2 text-center">
-                                      <svg class="mx-auto h-12 w-12 text-gray-300" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                      </svg>
-                                      <div class="flex text-sm text-gray-600 justify-center">
-                                        <span class="relative cursor-pointer rounded-md font-medium text-[#ea580c] hover:text-[#c24106]">Explorar archivos</span>
-                                      </div>
-                                      <p class="text-[11px] text-gray-400">PNG o SVG estático (max. 5MB)</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Text settings -->
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Título de Cabecera</label>
-                                <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border" value={viewTitle} />
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Mensaje Descriptivo / Cuerpo</label>
-                                <textarea rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border text-gray-600" placeholder="Escribe el texto de ayuda o descripción del componente..."></textarea>
-                            </div>
-                            
-                            <!-- Color Picker Mock -->
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Color Principal (Background/Texto)</label>
-                                <div class="flex items-center gap-3">
-                                   <div class="relative w-10 h-10 border border-gray-200 rounded-md overflow-hidden flex-shrink-0 shadow-sm">
-                                        <input type="color" class="absolute -top-2 -left-2 w-16 h-16 cursor-pointer" value="#FAFAFA" />
-                                   </div>
-                                   <input type="text" value="#FAFAFA" class="flex-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm p-2.5 border font-mono text-gray-600 uppercase" />
-                                </div>
-                            </div>
-
-                            <hr class="border-gray-100" />
-                            
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700">Estado de Publicación</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                  <input type="checkbox" checked value="" class="sr-only peer">
-                                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {/* MOCKUP: GESTOR DE ARCHIVOS */}
-            {isFileManager && (
-                <div class="flex-1 flex flex-col md:flex-row gap-6">
-                    <div class="w-full md:w-64 flex flex-col gap-2">
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-4 font-titles font-semibold text-gray-800 text-sm">
-                           Almacenamiento (78%)
-                           <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                              <div class="bg-[#ea580c] h-2.5 rounded-full" style="width: 78%"></div>
-                           </div>
-                           <p class="text-xs text-gray-500 font-body font-normal mt-2">78GB usados de 100GB</p>
-                        </div>
-                        <div class="text-sm font-medium text-gray-600 space-y-1">
-                           <a href="#" class="flex items-center gap-3 p-3 rounded-md bg-[#ea580c]/10 text-[#ea580c]"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> Mi Unidad</a>
-                           <a href="#" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-100"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Compartidos</a>
-                           <a href="#" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-100"><svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> Papelera</a>
-                        </div>
-                    </div>
-                    <div class="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col">
-                        <div class="flex items-center text-sm gap-2 text-gray-500 mb-6 bg-gray-50 p-3 rounded-lg w-full border border-gray-100">
-                             <a href="#" class="hover:text-gray-900 font-medium tracking-wide">Mi Unidad</a>
-                             <span class="text-gray-300">/</span>
-                             <a href="#" class="hover:text-gray-900 font-medium tracking-wide">Multimedia</a>
-                             <span class="text-gray-300">/</span>
-                             <span class="text-gray-900 font-semibold tracking-wide flex items-center">Campaña 2026</span>
-                        </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-4">
-                            <!-- Folder mocks -->
-                            {[1,2].map(x => (
-                            <div class="group border border-gray-100 p-4 rounded-xl hover:shadow-md cursor-pointer transition-all bg-gray-50/30 hover:bg-white hover:border-gray-300">
-                                <svg class="w-12 h-12 text-[#ea580c] mb-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
-                                <p class="text-sm font-semibold text-gray-800 truncate">Archivos Proy {x}</p>
-                                <p class="text-xs text-gray-400 mt-1">Carpetas • 3MB</p>
-                            </div>
-                            ))}
-                            <!-- File mocks -->
-                            {[1,2,3,4,5,6].map(x => (
-                            <div class="group border border-gray-100 p-4 rounded-xl hover:shadow-md cursor-pointer transition-all bg-gray-50 hover:bg-white relative hover:border-blue-300 flex flex-col">
-                                <span class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-900"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg></span>
-                                <div class="h-20 w-full flex items-center justify-center bg-gray-200/50 rounded-md mb-3 overflow-hidden text-blue-500">
-                                  {x % 2 === 0 ? <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path></svg> : <div class="bg-gray-300 w-full h-full"></div>}
-                                </div>
-                                <p class="text-sm font-semibold text-gray-800 truncate">Doc_V{x}.{x%2==0?'pdf':'jpg'}</p>
-                                <p class="text-[11px] text-gray-500 mt-1 uppercase tracking-wider">{12*x} KB</p>
-                            </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* MOCKUP: FORMULARIOS */}
-            {isFormManager && (
-                <div class="flex-1 flex flex-col gap-6">
-                    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
-                        <!-- List of Forms -->
-                        <div class="xl:col-span-1 flex flex-col gap-4">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                <div class="bg-gray-50 p-4 border-b border-gray-100 font-bold text-gray-700 text-sm tracking-wide">Formularios Activos</div>
-                                <div class="divide-y divide-gray-100">
-                                    <div class="p-4 bg-orange-50/50 cursor-pointer border-l-4 border-[#ea580c] transition-colors">
-                                        <h4 class="font-semibold tracking-wide text-sm text-gray-900">Formulario de Contacto Principal</h4>
-                                        <p class="text-xs text-gray-500 mt-1">283 Respuestas</p>
-                                    </div>
-                                    <div class="p-4 hover:bg-gray-50 cursor-pointer border-l-4 border-transparent transition-colors">
-                                        <h4 class="font-medium text-sm text-gray-700">Registro de Equipos</h4>
-                                        <p class="text-xs text-gray-500 mt-1">12 Respuestas</p>
-                                    </div>
-                                    <div class="p-4 hover:bg-gray-50 cursor-pointer border-l-4 border-transparent transition-colors">
-                                        <h4 class="font-medium text-sm text-gray-700">Encuesta a Bomberos</h4>
-                                        <p class="text-xs text-gray-500 mt-1">64 Respuestas</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Form Builder Mock -->
-                        <div class="xl:col-span-3 bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col">
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b pb-4 mb-6 gap-4">
-                                <div>
-                                    <h2 class="text-xl font-bold font-titles flex items-center">Formulario de Contacto Principal <svg class="w-4 h-4 ml-2 cursor-pointer text-gray-400 hover:text-[#ea580c]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></h2>
-                                    <p class="text-sm text-gray-500 mt-1">https://scarlet.com/form/contact-main</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button class="text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded text-sm font-medium">Respuestas</button>
-                                    <button class="text-white bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded text-sm font-medium flex items-center"><svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg> Compartir</button>
-                                </div>
-                            </div>
-
-                            <!-- Form fields builder canvas -->
-                            <div class="flex-1 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200 p-4 sm:p-6 space-y-4">
-                                <div class="bg-white p-4 lg:p-6 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-gray-100 relative group cursor-pointer hover:border-[#ea580c] transition-colors">
-                                    <div class="absolute -left-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100">
-                                        <svg class="w-6 h-6 text-gray-400 cursor-move" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 3a1 1 0 012 0v14a1 1 0 11-2 0V3zm-5 4a1 1 0 012 0v6a1 1 0 11-2 0V7zm10 0a1 1 0 012 0v6a1 1 0 11-2 0V7z" clip-rule="evenodd"></path></svg>
-                                    </div>
-                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-3">
-                                        <input type="text" value="Pregunta 1: Nombre Completo" class="font-bold text-gray-800 text-lg border-b border-transparent hover:border-gray-300 focus:border-[#ea580c] focus:outline-none bg-transparent w-full sm:w-2/3 transition-colors" />
-                                        <select class="border border-gray-300 rounded p-1.5 text-sm w-full sm:w-40 text-gray-600 focus:outline-[#ea580c] bg-white">
-                                            <option>Texto Corto</option>
-                                            <option>Párrafo</option>
-                                            <option>Varias opciones</option>
-                                        </select>
-                                    </div>
-                                    <input type="text" disabled placeholder="Texto de respuesta corta" class="w-full sm:w-1/2 border-b border-dashed border-gray-400 bg-transparent py-2 mt-2 text-sm" />
-                                </div>
-
-                                <div class="bg-white p-4 lg:p-6 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-gray-100 relative group cursor-pointer hover:border-[#ea580c] transition-colors">
-                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-3">
-                                        <input type="text" value="Pregunta 2: Motivo del Contacto" class="font-bold text-gray-800 text-lg border-b border-transparent hover:border-gray-300 focus:border-[#ea580c] focus:outline-none bg-transparent w-full sm:w-2/3 transition-colors" />
-                                        <select class="border border-gray-300 rounded p-1.5 text-sm w-full sm:w-40 text-gray-600 focus:outline-[#ea580c] bg-white">
-                                            <option>Varias opciones</option>
-                                            <option>Desplegable</option>
-                                        </select>
-                                    </div>
-                                    <div class="mt-4 space-y-2">
-                                        <div class="flex items-center gap-2"><div class="w-4 h-4 rounded-full border border-gray-400 shrink-0"></div> <input type="text" value="Soporte Técnico" class="text-sm border-b border-transparent hover:border-gray-300 w-full sm:w-1/3 outline-none min-w-[150px]" /></div>
-                                        <div class="flex items-center gap-2"><div class="w-4 h-4 rounded-full border border-gray-400 shrink-0"></div> <input type="text" value="Información" class="text-sm border-b border-transparent hover:border-gray-300 w-full sm:w-1/3 outline-none min-w-[150px]" /></div>
-                                        <div class="flex items-center gap-2"><div class="w-4 h-4 rounded-full border border-gray-400 shrink-0"></div> <input type="text" value="Otro" class="text-sm border-b border-transparent hover:border-gray-300 w-full sm:w-1/3 outline-none min-w-[150px]" /> <span class="text-red-500 font-bold ml-auto cursor-pointer text-sm">✕</span></div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-center mt-6">
-                                    <button class="bg-white shadow border border-gray-200 text-gray-700 hover:text-[#ea580c] hover:border-[#ea580c] rounded-full w-12 h-12 flex items-center justify-center transition-all focus:outline-none">
-                                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* MOCKUP: FUNCIONES WEB (Formularios Estructurados y Data Grid) */}
-            {isWebFunction && (
-                <div class="flex-1 flex flex-col gap-6">
-                    <!-- Form Mock -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
-                       <h3 class="text-lg font-bold text-gray-800 mb-6 font-titles border-b pb-4 flex items-center">
-                           <svg class="w-5 h-5 mr-2 text-[#ea580c]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                           Crear o Editar Registro
-                       </h3>
-                       <form class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                          <div>
-                             <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre / Identificador</label>
-                             <input type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border placeholder-gray-400" placeholder={`Nombre principal de ${viewTitle.toLowerCase()}...`} />
-                          </div>
-                          <div>
-                             <label class="block text-sm font-semibold text-gray-700 mb-2">Estado del Elemento</label>
-                             <select class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border bg-white">
-                                <option>Activo y Visible</option>
-                                <option>Inactivo / Suspendido</option>
-                                <option>Borrador (Solo Admin)</option>
-                             </select>
-                          </div>
-                          
-                          {/* File Upload typical in enterprise forms */}
-                          <div class="md:col-span-2">
-                             <label class="block text-sm font-semibold text-gray-700 mb-2">Certificado o Imagen Adjunta (Opcional)</label>
-                             <div class="flex items-center px-4 py-3 border border-gray-300 rounded-md shadow-sm">
-                                <button type="button" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-gray-50 hover:bg-gray-100">Examinar</button>
-                                <span class="ml-3 text-sm text-gray-500">Ningún archivo seleccionado.</span>
-                             </div>
-                          </div>
-
-                          <div class="md:col-span-2">
-                             <label class="block text-sm font-semibold text-gray-700 mb-2">Descripción Detallada / Notas Administrativas</label>
-                             <textarea rows="4" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border placeholder-gray-400" placeholder="Añade aquí todas las observaciones relevantes para el sistema..."></textarea>
-                          </div>
-                          
-                          <div class="md:col-span-2 flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
-                             <button type="button" class="px-6 py-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors">Cancelar</button>
-                             <button type="button" class="px-6 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-semibold text-white bg-[#ea580c] hover:bg-[#c24106] transition-colors">Guardar Información</button>
-                          </div>
-                       </form>
-                    </div>
-
-                    <!-- Data Table Mock -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex-1 flex flex-col">
-                        <div class="px-6 py-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white gap-4">
-                            <div>
-                                <h3 class="text-base font-bold text-gray-800">Registros Almacenados</h3>
-                                <p class="text-xs text-gray-500 mt-1">Lista en tiempo real con capacidad de filtrado</p>
-                            </div>
-                            <div class="relative w-full sm:w-auto">
-                                <input type="text" placeholder="Buscar por ID o Nombre..." class="block w-full sm:w-72 rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring-[#ea580c] sm:text-sm p-2.5 pl-9 border" />
-                                <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Identificador</th>
-                                        <th scope="col" class="px-6 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Descripción</th>
-                                        <th scope="col" class="px-6 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Estado</th>
-                                        <th scope="col" class="px-6 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Modificado</th>
-                                        <th scope="col" class="relative px-6 py-3.5"><span class="sr-only">Acciones</span></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-100">
-                                    <!-- Filas Mock -->
-                                    {[1,2,3,4,5].map((item) => (
-                                        <tr class="hover:bg-orange-50/30 transition-colors">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">#{viewTitle.substring(0,3).toUpperCase()}-30{item}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">Elemento Genérico de {viewTitle} B{item}0</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class={`px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${item % 2 === 0 ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                                                    {item % 2 === 0 ? 'Activo' : 'En Revisión'}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">hace {item*2} horas</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="#" class="text-[#ea580c] hover:text-[#c24106] mr-4 font-semibold">Editar</a>
-                                                <a href="#" class="text-red-500 hover:text-red-700 font-semibold">Eliminar</a>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Mostrando 5 de 42 resultados</span>
-                            <div class="flex gap-2">
-                                <button class="px-3 py-1 border border-gray-300 rounded text-sm bg-white text-gray-500 disabled:opacity-50">Anterior</button>
-                                <button class="px-3 py-1 border border-gray-300 rounded text-sm bg-white text-gray-700 hover:bg-gray-50">1</button>
-                                <button class="px-3 py-1 border border-white rounded text-sm bg-[#ea580c] text-white">2</button>
-                                <button class="px-3 py-1 border border-gray-300 rounded text-sm bg-white text-gray-700 hover:bg-gray-50">3</button>
-                                <button class="px-3 py-1 border border-gray-300 rounded text-sm bg-white text-gray-700 hover:bg-gray-50">Siguiente</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* MOCKUP: PANELES GENERALES (Estadísticas y Entidades) */}
-            {isPanel && (
-                <div class="flex-1 flex flex-col gap-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-[#ea580c]">
-                            <p class="text-sm font-medium text-gray-500 mb-1">Total Módulos de {viewTitle}</p>
-                            <h3 class="text-3xl font-bold text-gray-800">142</h3>
-                            <p class="text-xs text-green-500 mt-2 font-medium flex items-center"><svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" transform="rotate(180 10 10)"/></svg> 12% desde el mes pasado</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-blue-500">
-                            <p class="text-sm font-medium text-gray-500 mb-1">Actividad Reciente</p>
-                            <h3 class="text-3xl font-bold text-gray-800">89</h3>
-                            <p class="text-xs text-green-500 mt-2 font-medium flex items-center"><svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" transform="rotate(180 10 10)"/></svg> 5% uso intensivo</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-red-500">
-                            <p class="text-sm font-medium text-gray-500 mb-1">Alertas Activas</p>
-                            <h3 class="text-3xl font-bold text-gray-800">3</h3>
-                            <p class="text-xs text-red-500 mt-2 font-medium flex items-center"><svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Requiere revisión</p>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {isGraphicElement && <GraphicElementView viewTitle={viewTitle} />}
+            {isFileManager && <FileManagerView viewTitle={viewTitle} />}
+            {isFormManager && <FormManagerView viewTitle={viewTitle} />}
+            {isWebFunction && <WebFunctionView viewTitle={viewTitle} />}
+            {isPanel && <PanelView viewTitle={viewTitle} />}
             
         </div>
      </main>
+
+     <!-- MODALS -->
+     <Modal modalId="modal-new-record" title="Nuevo Registro">
+         <form class="space-y-4" id="form-new-record">
+             <div>
+                 <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre / Identificador</label>
+                 <input type="text" id="nr-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border" placeholder="Nombre del registro..." required />
+             </div>
+             <div>
+                 <label class="block text-sm font-semibold text-gray-700 mb-1">Estado</label>
+                 <select id="nr-status" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border bg-white">
+                     <option>Activo</option><option>En Revisión</option><option>Borrador</option>
+                 </select>
+             </div>
+             <div>
+                 <label class="block text-sm font-semibold text-gray-700 mb-1">Descripción</label>
+                 <textarea id="nr-desc" rows="3" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border" placeholder="Descripción breve..."></textarea>
+             </div>
+             <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                 <button type="button" class="modal-close-btn px-5 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50" data-modal="modal-new-record">Cancelar</button>
+                 <button type="button" id="nr-submit" class="px-5 py-2 bg-[#ea580c] hover:bg-[#c24106] text-white rounded-md text-sm font-semibold">Crear Registro</button>
+             </div>
+         </form>
+     </Modal>
+
+     <Modal modalId="modal-new-form" title="Crear Formulario">
+         <form class="space-y-4" id="form-new-form">
+             <div>
+                 <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre del Formulario</label>
+                 <input type="text" id="nf-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border" placeholder="Ej: Encuesta de satisfacción..." required />
+             </div>
+             <div>
+                 <label class="block text-sm font-semibold text-gray-700 mb-1">URL Slug</label>
+                 <div class="flex items-center">
+                     <span class="text-sm text-gray-400 mr-1">scarlet.com/form/</span>
+                     <input type="text" id="nf-url" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border font-mono" placeholder="mi-formulario" />
+                 </div>
+             </div>
+             <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                 <button type="button" class="modal-close-btn px-5 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50" data-modal="modal-new-form">Cancelar</button>
+                 <button type="button" id="nf-submit" class="px-5 py-2 bg-[#ea580c] hover:bg-[#c24106] text-white rounded-md text-sm font-semibold">Crear Formulario</button>
+             </div>
+         </form>
+     </Modal>
+
+     <Modal modalId="modal-new-folder" title="Nueva Carpeta" size="sm">
+         <form class="space-y-4">
+             <div>
+                 <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre de la Carpeta</label>
+                 <input type="text" id="nfol-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border" placeholder="Nueva carpeta..." required />
+             </div>
+             <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                 <button type="button" class="modal-close-btn px-5 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50" data-modal="modal-new-folder">Cancelar</button>
+                 <button type="button" id="nfol-submit" class="px-5 py-2 bg-[#ea580c] hover:bg-[#c24106] text-white rounded-md text-sm font-semibold">Crear Carpeta</button>
+             </div>
+         </form>
+     </Modal>
+
+     <Modal modalId="modal-upload-files" title="Subir Archivos" size="lg">
+         <div class="space-y-4">
+             <div id="upload-drop-zone" class="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center hover:border-[#ea580c] transition-colors cursor-pointer">
+                 <svg class="mx-auto h-14 w-14 text-gray-300 mb-3" stroke="currentColor" fill="none" viewBox="0 0 48 48"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                 <p class="text-sm text-gray-600 font-medium">Arrastra archivos aquí o <span class="text-[#ea580c] font-semibold">haz clic para explorar</span></p>
+                 <p class="text-xs text-gray-400 mt-1">PNG, JPG, PDF, DOCX (max. 50MB)</p>
+                 <input type="file" id="upload-input" class="hidden" multiple />
+             </div>
+             <div id="upload-file-list" class="space-y-2 max-h-40 overflow-y-auto"></div>
+             <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                 <button type="button" class="modal-close-btn px-5 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50" data-modal="modal-upload-files">Cancelar</button>
+                 <button type="button" id="upload-submit" class="px-5 py-2 bg-[#ea580c] hover:bg-[#c24106] text-white rounded-md text-sm font-semibold">Subir</button>
+             </div>
+         </div>
+     </Modal>
+
+     <!-- Toast notification -->
+     <div id="toast" class="fixed bottom-6 right-6 z-[10000] hidden">
+         <div class="bg-gray-900 text-white px-5 py-3 rounded-lg shadow-xl text-sm font-medium flex items-center gap-2">
+             <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+             <span id="toast-msg">Acción completada</span>
+         </div>
+     </div>
 </Layout>
+
+<script is:inline>
+(function(){
+    function showToast(msg){
+        const t=document.getElementById('toast'),m=document.getElementById('toast-msg');
+        if(t&&m){m.textContent=msg;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),3000);}
+    }
+
+    // New Record modal submit
+    document.getElementById('nr-submit')?.addEventListener('click',()=>{
+        const n=document.getElementById('nr-name'),s=document.getElementById('nr-status');
+        if(n&&n.value.trim()){
+            if(window.addNewRecord)window.addNewRecord(n.value,s?s.value:'Activo','');
+            n.value='';window.closeModal('modal-new-record');showToast('Registro creado exitosamente');
+        }
+    });
+
+    // New Form modal submit
+    document.getElementById('nf-submit')?.addEventListener('click',()=>{
+        const n=document.getElementById('nf-name'),u=document.getElementById('nf-url');
+        if(n&&n.value.trim()){
+            if(window.addNewForm)window.addNewForm(n.value,u?u.value:'new-form');
+            n.value='';if(u)u.value='';window.closeModal('modal-new-form');showToast('Formulario creado exitosamente');
+        }
+    });
+
+    // New Folder modal submit
+    document.getElementById('nfol-submit')?.addEventListener('click',()=>{
+        const n=document.getElementById('nfol-name');
+        if(n&&n.value.trim()){n.value='';window.closeModal('modal-new-folder');showToast('Carpeta creada exitosamente');}
+    });
+
+    // Upload files modal
+    const dz=document.getElementById('upload-drop-zone'),fi=document.getElementById('upload-input'),fl=document.getElementById('upload-file-list');
+    let selectedFiles=[];
+    dz?.addEventListener('click',()=>fi?.click());
+    dz?.addEventListener('dragover',(e)=>{e.preventDefault();dz.classList.add('border-[#ea580c]','bg-orange-50');});
+    dz?.addEventListener('dragleave',()=>{dz.classList.remove('border-[#ea580c]','bg-orange-50');});
+    dz?.addEventListener('drop',(e)=>{e.preventDefault();dz.classList.remove('border-[#ea580c]','bg-orange-50');addFiles(e.dataTransfer.files);});
+    fi?.addEventListener('change',()=>{if(fi.files)addFiles(fi.files);});
+
+    function addFiles(files){
+        for(const f of files)selectedFiles.push(f);
+        renderFileList();
+    }
+    function renderFileList(){
+        if(!fl)return;
+        fl.innerHTML=selectedFiles.map((f,i)=>`<div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg border">
+            <div class="flex items-center gap-2"><svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm text-gray-700 font-medium">${f.name}</span><span class="text-xs text-gray-400">${(f.size/1024).toFixed(1)} KB</span></div>
+            <button class="text-red-400 hover:text-red-600 uf-rm" data-idx="${i}">✕</button></div>`).join('');
+        fl.querySelectorAll('.uf-rm').forEach(b=>b.addEventListener('click',()=>{selectedFiles.splice(parseInt(b.dataset.idx),1);renderFileList();}));
+    }
+    document.getElementById('upload-submit')?.addEventListener('click',()=>{
+        if(selectedFiles.length>0){selectedFiles=[];if(fl)fl.innerHTML='';window.closeModal('modal-upload-files');showToast(`Archivos subidos exitosamente`);}
+    });
+
+    // Preview button for graphic elements
+    document.getElementById('btn-preview')?.addEventListener('click',()=>{if(window.openGraphicPreview)window.openGraphicPreview();});
+})();
+</script>

@@ -1,0 +1,108 @@
+---
+interface Props {
+    viewTitle: string;
+}
+const { viewTitle } = Astro.props;
+---
+
+<div class="flex-1 flex flex-col md:flex-row gap-6" id="file-manager">
+    <div class="w-full md:w-64 flex flex-col gap-2">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-4 font-titles font-semibold text-gray-800 text-sm">
+           Almacenamiento (78%)
+           <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+              <div class="bg-[#ea580c] h-2.5 rounded-full" style="width: 78%"></div>
+           </div>
+           <p class="text-xs text-gray-500 font-body font-normal mt-2">78GB usados de 100GB</p>
+        </div>
+        <div class="text-sm font-medium text-gray-600 space-y-1" id="file-nav">
+           <a href="#" data-folder="mi-unidad" class="flex items-center gap-3 p-3 rounded-md bg-[#ea580c]/10 text-[#ea580c] file-nav-item active"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> Mi Unidad</a>
+           <a href="#" data-folder="compartidos" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-100 file-nav-item"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Compartidos</a>
+           <a href="#" data-folder="papelera" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-100 file-nav-item"><svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> Papelera</a>
+        </div>
+    </div>
+    <div class="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col">
+        <div class="flex items-center text-sm gap-2 text-gray-500 mb-6 bg-gray-50 p-3 rounded-lg w-full border border-gray-100" id="file-breadcrumb">
+             <a href="#" class="hover:text-gray-900 font-medium tracking-wide">Mi Unidad</a>
+             <span class="text-gray-300">/</span>
+             <a href="#" class="hover:text-gray-900 font-medium tracking-wide">Multimedia</a>
+             <span class="text-gray-300">/</span>
+             <span class="text-gray-900 font-semibold tracking-wide flex items-center">Campaña 2026</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-4" id="file-grid">
+            <!-- Rendered dynamically by script -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // File manager mock data
+    const mockFiles = {
+        'mi-unidad': {
+            folders: [
+                { name: 'Archivos Proy 1', size: '3MB' },
+                { name: 'Archivos Proy 2', size: '5MB' },
+            ],
+            files: [
+                { name: 'Doc_V1.jpg', size: '12 KB', type: 'image' },
+                { name: 'Doc_V2.pdf', size: '24 KB', type: 'doc' },
+                { name: 'Doc_V3.jpg', size: '36 KB', type: 'image' },
+                { name: 'Doc_V4.pdf', size: '48 KB', type: 'doc' },
+                { name: 'Doc_V5.jpg', size: '60 KB', type: 'image' },
+                { name: 'Doc_V6.pdf', size: '72 KB', type: 'doc' },
+            ]
+        },
+        'compartidos': {
+            folders: [{ name: 'Proyecto Compartido', size: '12MB' }],
+            files: [
+                { name: 'Informe_Q1.pdf', size: '120 KB', type: 'doc' },
+                { name: 'Logo_Equipo.png', size: '45 KB', type: 'image' },
+            ]
+        },
+        'papelera': {
+            folders: [],
+            files: [
+                { name: 'Borrador_antiguo.docx', size: '30 KB', type: 'doc' },
+                { name: 'Imagen_descartada.jpg', size: '88 KB', type: 'image' },
+            ]
+        }
+    };
+
+    function renderFileGrid(section) {
+        const grid = document.getElementById('file-grid');
+        const data = mockFiles[section] || mockFiles['mi-unidad'];
+        let html = '';
+        data.folders.forEach(f => {
+            html += `<div class="group border border-gray-100 p-4 rounded-xl hover:shadow-md cursor-pointer transition-all bg-gray-50/30 hover:bg-white hover:border-gray-300">
+                <svg class="w-12 h-12 text-[#ea580c] mb-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
+                <p class="text-sm font-semibold text-gray-800 truncate">${f.name}</p>
+                <p class="text-xs text-gray-400 mt-1">Carpeta • ${f.size}</p>
+            </div>`;
+        });
+        data.files.forEach(f => {
+            const isDoc = f.type === 'doc';
+            html += `<div class="group border border-gray-100 p-4 rounded-xl hover:shadow-md cursor-pointer transition-all bg-gray-50 hover:bg-white relative hover:border-blue-300 flex flex-col">
+                <span class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-900"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg></span>
+                <div class="h-20 w-full flex items-center justify-center bg-gray-200/50 rounded-md mb-3 overflow-hidden text-blue-500">
+                    ${isDoc ? '<svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path></svg>' : '<div class="bg-gray-300 w-full h-full"></div>'}
+                </div>
+                <p class="text-sm font-semibold text-gray-800 truncate">${f.name}</p>
+                <p class="text-[11px] text-gray-500 mt-1 uppercase tracking-wider">${f.size}</p>
+            </div>`;
+        });
+        grid.innerHTML = html;
+    }
+
+    // Nav click handlers
+    document.querySelectorAll('.file-nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.file-nav-item').forEach(i => { i.classList.remove('bg-[#ea580c]/10', 'text-[#ea580c]', 'active'); i.classList.add('hover:bg-gray-100'); });
+            item.classList.add('bg-[#ea580c]/10', 'text-[#ea580c]', 'active');
+            item.classList.remove('hover:bg-gray-100');
+            renderFileGrid(item.dataset.folder);
+        });
+    });
+
+    // Initial render
+    renderFileGrid('mi-unidad');
+</script>

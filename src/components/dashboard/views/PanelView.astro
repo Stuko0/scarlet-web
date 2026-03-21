@@ -1,0 +1,35 @@
+---
+interface Props {
+    viewTitle: string;
+}
+const { viewTitle } = Astro.props;
+---
+
+<div class="flex-1 flex flex-col gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-[#ea580c]">
+            <p class="text-sm font-medium text-gray-500 mb-1">Total Módulos de {viewTitle}</p>
+            <h3 class="text-3xl font-bold text-gray-800">142</h3>
+            <p class="text-xs text-green-500 mt-2 font-medium flex items-center">
+                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" transform="rotate(180 10 10)"/></svg>
+                12% desde el mes pasado
+            </p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-blue-500">
+            <p class="text-sm font-medium text-gray-500 mb-1">Actividad Reciente</p>
+            <h3 class="text-3xl font-bold text-gray-800">89</h3>
+            <p class="text-xs text-green-500 mt-2 font-medium flex items-center">
+                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" transform="rotate(180 10 10)"/></svg>
+                5% uso intensivo
+            </p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-red-500">
+            <p class="text-sm font-medium text-gray-500 mb-1">Alertas Activas</p>
+            <h3 class="text-3xl font-bold text-gray-800">3</h3>
+            <p class="text-xs text-red-500 mt-2 font-medium flex items-center">
+                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Requiere revisión
+            </p>
+        </div>
+    </div>
+</div>

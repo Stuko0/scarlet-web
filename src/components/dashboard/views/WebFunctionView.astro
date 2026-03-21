@@ -1,0 +1,117 @@
+---
+interface Props {
+    viewTitle: string;
+}
+const { viewTitle } = Astro.props;
+---
+
+<div class="flex-1 flex flex-col gap-6" id="web-function-view">
+    <!-- Form Mock -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+       <h3 class="text-lg font-bold text-gray-800 mb-6 font-titles border-b pb-4 flex items-center">
+           <svg class="w-5 h-5 mr-2 text-[#ea580c]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+           Crear o Editar Registro
+       </h3>
+       <form class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6" id="wf-create-form">
+          <div>
+             <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre / Identificador</label>
+             <input type="text" id="wf-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border placeholder-gray-400" placeholder={`Nombre principal...`} />
+          </div>
+          <div>
+             <label class="block text-sm font-semibold text-gray-700 mb-2">Estado del Elemento</label>
+             <select id="wf-status" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border bg-white">
+                <option>Activo y Visible</option>
+                <option>Inactivo / Suspendido</option>
+                <option>Borrador (Solo Admin)</option>
+             </select>
+          </div>
+          <div class="md:col-span-2">
+             <label class="block text-sm font-semibold text-gray-700 mb-2">Certificado o Imagen Adjunta (Opcional)</label>
+             <div class="flex items-center px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                <button type="button" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-gray-50 hover:bg-gray-100">Examinar</button>
+                <span class="ml-3 text-sm text-gray-500" id="wf-file-name">Ningún archivo seleccionado.</span>
+             </div>
+          </div>
+          <div class="md:col-span-2">
+             <label class="block text-sm font-semibold text-gray-700 mb-2">Descripción Detallada / Notas Administrativas</label>
+             <textarea rows="4" id="wf-desc" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border placeholder-gray-400" placeholder="Añade aquí todas las observaciones relevantes..."></textarea>
+          </div>
+          <div class="md:col-span-2 flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+             <button type="button" id="wf-cancel" class="px-6 py-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors">Cancelar</button>
+             <button type="button" id="wf-save" class="px-6 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-semibold text-white bg-[#ea580c] hover:bg-[#c24106] transition-colors">Guardar Información</button>
+          </div>
+       </form>
+    </div>
+
+    <!-- Data Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex-1 flex flex-col">
+        <div class="px-6 py-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white gap-4">
+            <div>
+                <h3 class="text-base font-bold text-gray-800">Registros Almacenados</h3>
+                <p class="text-xs text-gray-500 mt-1">Lista en tiempo real con capacidad de filtrado</p>
+            </div>
+            <div class="relative w-full sm:w-auto">
+                <input type="text" id="wf-search" placeholder="Buscar por ID o Nombre..." class="block w-full sm:w-72 rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring-[#ea580c] sm:text-sm p-2.5 pl-9 border" />
+                <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Identificador</th>
+                        <th class="px-6 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Descripción</th>
+                        <th class="px-6 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Estado</th>
+                        <th class="px-6 py-3.5 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">Modificado</th>
+                        <th class="relative px-6 py-3.5"><span class="sr-only">Acciones</span></th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-100" id="wf-table-body"></tbody>
+            </table>
+        </div>
+        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
+            <span class="text-sm text-gray-500" id="wf-count">Mostrando 0 resultados</span>
+            <div class="flex gap-2" id="wf-pagination"></div>
+        </div>
+    </div>
+</div>
+
+<script define:vars={{ viewTitle }}>
+(function(){
+    const prefix = viewTitle.substring(0,3).toUpperCase();
+    let records = [];
+    for(let i=1;i<=12;i++) records.push({id:prefix+'-30'+i,name:'Elemento de '+viewTitle+' B'+i+'0',status:i%2===0?'Activo':'En Revisión',time:'hace '+(i*2)+' horas'});
+    let page=1;const perPage=5;
+
+    function render(filter=''){
+        const filtered=filter?records.filter(r=>r.id.toLowerCase().includes(filter)||r.name.toLowerCase().includes(filter)):records;
+        const total=filtered.length,pages=Math.ceil(total/perPage);
+        const start=(page-1)*perPage,items=filtered.slice(start,start+perPage);
+        const tbody=document.getElementById('wf-table-body');
+        if(tbody)tbody.innerHTML=items.map(r=>`<tr class="hover:bg-orange-50/30 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">#${r.id}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">${r.name}</td>
+            <td class="px-6 py-4 whitespace-nowrap"><span class="px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${r.status==='Activo'?'bg-green-100 text-green-700':'bg-yellow-100 text-yellow-700'}">${r.status}</span></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${r.time}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><a href="#" class="text-[#ea580c] hover:text-[#c24106] mr-4 font-semibold">Editar</a><a href="#" class="text-red-500 hover:text-red-700 font-semibold wf-del" data-id="${r.id}">Eliminar</a></td>
+        </tr>`).join('');
+        const cnt=document.getElementById('wf-count');if(cnt)cnt.textContent=`Mostrando ${items.length} de ${total} resultados`;
+        const pg=document.getElementById('wf-pagination');
+        if(pg){let h='';for(let i=1;i<=pages;i++)h+=`<button class="px-3 py-1 border rounded text-sm ${i===page?'bg-[#ea580c] text-white border-white':'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'} wf-pg" data-p="${i}">${i}</button>`;pg.innerHTML=h;
+        pg.querySelectorAll('.wf-pg').forEach(b=>b.addEventListener('click',()=>{page=parseInt(b.dataset.p);render(filter);}));}
+        document.querySelectorAll('.wf-del').forEach(b=>b.addEventListener('click',(e)=>{e.preventDefault();records=records.filter(r=>r.id!==b.dataset.id);render(filter);}));
+    }
+
+    document.getElementById('wf-search')?.addEventListener('input',(e)=>{page=1;render(e.target.value.toLowerCase());});
+    document.getElementById('wf-save')?.addEventListener('click',()=>{
+        const n=document.getElementById('wf-name'),d=document.getElementById('wf-desc'),s=document.getElementById('wf-status');
+        if(n&&n.value.trim()){records.unshift({id:prefix+'-'+Date.now().toString().slice(-3),name:n.value,status:s?s.value.split(' ')[0]:'Activo',time:'ahora'});n.value='';if(d)d.value='';render();}
+    });
+    document.getElementById('wf-cancel')?.addEventListener('click',()=>{
+        const n=document.getElementById('wf-name'),d=document.getElementById('wf-desc');if(n)n.value='';if(d)d.value='';
+    });
+
+    window.addNewRecord=function(name,status,desc){records.unshift({id:prefix+'-'+Date.now().toString().slice(-3),name,status:status||'Activo',time:'ahora'});render();};
+    render();
+})();
+</script>

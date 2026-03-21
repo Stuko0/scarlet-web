@@ -20,12 +20,16 @@ import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const breadcrumbs = [
+    { label: 'Panel', href: `/${lang}/dashboard/Dashboard` },
+    { label: 'Panel de Análisis' }
+];
 ---
  <Layout title="!Scarlet Dashboard">
      <Sidebar/>
      <main class="min-h-screen">
-        <HeaderDash/>
-        <div class="p-6">
+        <HeaderDash breadcrumbs={breadcrumbs} />
+        <div class="p-6 pt-16">
             <Resume/>
             <Manage/>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 md:w-[calc(100%-256px)] md:ml-64 w-full">

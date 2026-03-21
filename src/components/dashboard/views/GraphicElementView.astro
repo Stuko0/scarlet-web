@@ -1,0 +1,310 @@
+---
+interface Props {
+    viewTitle: string;
+}
+const { viewTitle } = Astro.props;
+---
+
+<div class="flex-1 flex flex-col xl:flex-row gap-6" id="graphic-builder">
+    <!-- Toolbox Sidebar -->
+    <div class="w-full xl:w-64 bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col h-fit">
+        <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Elementos GUI</h3>
+        <div class="space-y-3" id="toolbox-items">
+            <div class="p-3 border border-gray-200 rounded-md bg-white flex items-center cursor-move hover:border-[#ea580c] hover:shadow-sm transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)]" draggable="true" data-element-type="text">
+                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                <span class="text-sm font-medium text-gray-700">Bloque de Texto</span>
+            </div>
+            <div class="p-3 border border-gray-200 rounded-md bg-white flex items-center cursor-move hover:border-[#ea580c] hover:shadow-sm transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)]" draggable="true" data-element-type="image">
+                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="text-sm font-medium text-gray-700">Imagen Destacada</span>
+            </div>
+            <div class="p-3 border border-gray-200 rounded-md bg-white flex items-center cursor-move hover:border-[#ea580c] hover:shadow-sm transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)]" draggable="true" data-element-type="icon">
+                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-sm font-medium text-gray-700">Icono Vectorial</span>
+            </div>
+            <div class="p-3 border border-gray-200 rounded-md bg-white flex items-center cursor-move hover:border-[#ea580c] hover:shadow-sm transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)]" draggable="true" data-element-type="button">
+                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <span class="text-sm font-medium text-gray-700">Botón Interactivo</span>
+            </div>
+        </div>
+        
+        <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-8 mb-4">Estructura</h3>
+        <div class="grid grid-cols-2 gap-2">
+           <div class="h-12 border border-gray-200 rounded bg-gray-50 flex items-center justify-center cursor-pointer hover:border-[#ea580c]" draggable="true" data-element-type="container">
+               <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+           </div>
+           <div class="h-12 border border-gray-200 rounded bg-gray-50 flex items-center justify-center cursor-pointer hover:border-[#ea580c]" draggable="true" data-element-type="columns">
+               <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 3h18v18H3z"></path></svg>
+           </div>
+        </div>
+    </div>
+
+    <!-- Canvas Builder -->
+    <div class="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 p-2 md:p-6 flex flex-col relative overflow-hidden">
+        <div class="absolute top-4 left-6 text-xs font-bold text-gray-300">LIENZO DE EDICIÓN</div>
+        <div class="flex-1 mt-6 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50/50 flex flex-col items-center p-8 gap-4 min-h-[500px] transition-colors" id="canvas-drop-zone">
+            <!-- Placeholder shown when empty -->
+            <div id="canvas-placeholder" class="flex flex-col items-center justify-center h-full w-full">
+                <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"></path></svg>
+                <p class="text-gray-400 text-sm font-medium">Arrastra elementos del panel izquierdo aquí</p>
+                <p class="text-gray-300 text-xs mt-1">o haz clic en un elemento para agregarlo</p>
+            </div>
+            <!-- Dropped elements rendered here by JS -->
+        </div>
+    </div>
+
+    <!-- Properties Sidebar -->
+    <div class="w-full xl:w-80 bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col h-fit">
+        <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-5">Personalizador</h3>
+        <div id="props-empty" class="text-center text-gray-400 text-sm py-10">
+            <svg class="w-10 h-10 mx-auto text-gray-200 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+            Selecciona un elemento del lienzo para editar sus propiedades
+        </div>
+        <form class="space-y-6 hidden" id="props-form">
+            <!-- Upload Box Mock -->
+            <div class="bg-gray-50 p-4 border rounded-lg">
+                <label class="block text-xs font-semibold text-gray-700 mb-2">Icono / Imagen del Módulo</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-[#ea580c] transition-colors cursor-pointer bg-white" id="props-image-upload">
+                    <div class="space-y-2 text-center">
+                      <svg class="mx-auto h-12 w-12 text-gray-300" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <div class="flex text-sm text-gray-600 justify-center">
+                        <span class="relative cursor-pointer rounded-md font-medium text-[#ea580c] hover:text-[#c24106]">Explorar archivos</span>
+                      </div>
+                      <p class="text-[11px] text-gray-400">PNG o SVG estático (max. 5MB)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Text settings -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Título de Cabecera</label>
+                <input type="text" id="prop-title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border" value="" />
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Mensaje Descriptivo / Cuerpo</label>
+                <textarea rows="3" id="prop-body" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border text-gray-600" placeholder="Escribe el texto de ayuda o descripción del componente..."></textarea>
+            </div>
+            
+            <!-- Color Picker -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Color Principal (Background/Texto)</label>
+                <div class="flex items-center gap-3">
+                   <div class="relative w-10 h-10 border border-gray-200 rounded-md overflow-hidden flex-shrink-0 shadow-sm">
+                        <input type="color" id="prop-color" class="absolute -top-2 -left-2 w-16 h-16 cursor-pointer" value="#FAFAFA" />
+                   </div>
+                   <input type="text" id="prop-color-text" value="#FAFAFA" class="flex-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm p-2.5 border font-mono text-gray-600 uppercase" />
+                </div>
+            </div>
+
+            <hr class="border-gray-100" />
+            
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-700">Estado de Publicación</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" checked value="" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                </label>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Preview Overlay -->
+<div id="preview-overlay" class="fixed inset-0 bg-black/70 z-[9999] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col overflow-hidden">
+        <div class="flex items-center justify-between p-4 border-b bg-gray-50">
+            <div class="flex items-center gap-3">
+                <div class="flex gap-1.5">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span class="text-sm text-gray-500 font-mono" id="preview-url">preview://localhost/page</span>
+            </div>
+            <button id="close-preview" class="text-gray-400 hover:text-gray-700 transition-colors">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <iframe id="preview-iframe" class="flex-1 w-full border-0" sandbox="allow-scripts"></iframe>
+    </div>
+</div>
+
+<script define:vars={{ viewTitle }}>
+    // ===== DRAG & DROP BUILDER =====
+    const canvas = document.getElementById('canvas-drop-zone');
+    const placeholder = document.getElementById('canvas-placeholder');
+    const propsEmpty = document.getElementById('props-empty');
+    const propsForm = document.getElementById('props-form');
+    const propTitle = document.getElementById('prop-title');
+    const propBody = document.getElementById('prop-body');
+    const propColor = document.getElementById('prop-color');
+    const propColorText = document.getElementById('prop-color-text');
+
+    let canvasElements = [];
+    let selectedId = null;
+    let dragCounter = 0;
+
+    const elementDefaults = {
+        text: { label: 'Bloque de Texto', color: '#1e40af', bgColor: '#dbeafe', borderColor: '#60a5fa', content: 'Escribe tu texto aquí...', height: '80px' },
+        image: { label: 'Imagen Destacada', color: '#1e40af', bgColor: '#dbeafe', borderColor: '#60a5fa', content: 'CAJA DE IMAGEN PRINCIPAL', height: '200px' },
+        icon: { label: 'Icono Vectorial', color: '#7e22ce', bgColor: '#f3e8ff', borderColor: '#a855f7', content: '★', height: '100px' },
+        button: { label: 'Botón Interactivo', color: '#b45309', bgColor: '#fef3c7', borderColor: '#f59e0b', content: 'Click Aquí', height: '60px' },
+        container: { label: 'Contenedor', color: '#166534', bgColor: '#dcfce7', borderColor: '#4ade80', content: 'Contenedor vacío', height: '120px' },
+        columns: { label: 'Columnas', color: '#0e7490', bgColor: '#cffafe', borderColor: '#22d3ee', content: 'Layout 2 columnas', height: '100px' }
+    };
+
+    function generateId() { return 'el-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5); }
+
+    function addElement(type) {
+        const def = elementDefaults[type] || elementDefaults.text;
+        const el = { id: generateId(), type, title: def.label, body: def.content, color: def.bgColor, borderColor: def.borderColor, textColor: def.color, height: def.height };
+        canvasElements.push(el);
+        renderCanvas();
+        selectElement(el.id);
+    }
+
+    function renderCanvas() {
+        // Remove old rendered elements
+        canvas.querySelectorAll('.canvas-element').forEach(e => e.remove());
+        if (canvasElements.length === 0) {
+            placeholder.classList.remove('hidden');
+        } else {
+            placeholder.classList.add('hidden');
+        }
+        canvasElements.forEach((el, idx) => {
+            const div = document.createElement('div');
+            div.className = 'canvas-element w-full max-w-lg border-2 border-dashed rounded-lg flex flex-col items-center justify-center relative group transition-all cursor-pointer';
+            div.style.borderColor = el.borderColor;
+            div.style.backgroundColor = el.color + 'cc';
+            div.style.minHeight = el.height;
+            div.dataset.elementId = el.id;
+            div.draggable = true;
+            if (el.id === selectedId) div.classList.add('ring-2', 'ring-[#ea580c]', 'ring-offset-2');
+
+            div.innerHTML = `
+                <div class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer shadow-md transition-opacity remove-btn" data-id="${el.id}">✕</div>
+                <span class="font-bold text-sm tracking-wide" style="color:${el.textColor}">${el.title.toUpperCase()}</span>
+                <span class="text-xs mt-1" style="color:${el.textColor}80">${el.body}</span>
+            `;
+
+            // Click to select
+            div.addEventListener('click', (e) => { if (!e.target.closest('.remove-btn')) selectElement(el.id); });
+            // Remove button
+            div.querySelector('.remove-btn').addEventListener('click', () => removeElement(el.id));
+            // Drag reorder within canvas
+            div.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/reorder', el.id); e.dataTransfer.effectAllowed = 'move'; });
+            div.addEventListener('dragover', (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; div.classList.add('ring-2', 'ring-blue-400'); });
+            div.addEventListener('dragleave', () => { div.classList.remove('ring-2', 'ring-blue-400'); });
+            div.addEventListener('drop', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                div.classList.remove('ring-2', 'ring-blue-400');
+                const reorderId = e.dataTransfer.getData('text/reorder');
+                if (reorderId && reorderId !== el.id) {
+                    const fromIdx = canvasElements.findIndex(x => x.id === reorderId);
+                    const toIdx = canvasElements.findIndex(x => x.id === el.id);
+                    if (fromIdx > -1 && toIdx > -1) {
+                        const [moved] = canvasElements.splice(fromIdx, 1);
+                        canvasElements.splice(toIdx, 0, moved);
+                        renderCanvas();
+                    }
+                }
+            });
+            canvas.appendChild(div);
+        });
+    }
+
+    function selectElement(id) {
+        selectedId = id;
+        const el = canvasElements.find(x => x.id === id);
+        if (!el) return;
+        propsEmpty.classList.add('hidden');
+        propsForm.classList.remove('hidden');
+        propTitle.value = el.title;
+        propBody.value = el.body;
+        propColor.value = el.color.length === 9 ? el.color.slice(0, 7) : el.color;
+        propColorText.value = propColor.value;
+        renderCanvas();
+    }
+
+    function removeElement(id) {
+        canvasElements = canvasElements.filter(x => x.id !== id);
+        if (selectedId === id) {
+            selectedId = null;
+            propsEmpty.classList.remove('hidden');
+            propsForm.classList.add('hidden');
+        }
+        renderCanvas();
+    }
+
+    // Property inputs update selected element
+    propTitle?.addEventListener('input', () => { const el = canvasElements.find(x => x.id === selectedId); if (el) { el.title = propTitle.value; renderCanvas(); } });
+    propBody?.addEventListener('input', () => { const el = canvasElements.find(x => x.id === selectedId); if (el) { el.body = propBody.value; renderCanvas(); } });
+    propColor?.addEventListener('input', () => {
+        const el = canvasElements.find(x => x.id === selectedId);
+        if (el) { el.color = propColor.value; propColorText.value = propColor.value; renderCanvas(); }
+    });
+    propColorText?.addEventListener('input', () => {
+        const el = canvasElements.find(x => x.id === selectedId);
+        if (el && /^#[0-9a-fA-F]{6}$/.test(propColorText.value)) { el.color = propColorText.value; propColor.value = propColorText.value; renderCanvas(); }
+    });
+
+    // ===== TOOLBOX DRAG → CANVAS =====
+    document.querySelectorAll('#toolbox-items [draggable]').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/element-type', item.dataset.elementType);
+            e.dataTransfer.effectAllowed = 'copy';
+        });
+        // Also allow click to add
+        item.addEventListener('click', () => addElement(item.dataset.elementType));
+    });
+    document.querySelectorAll('.grid [draggable]').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/element-type', item.dataset.elementType);
+            e.dataTransfer.effectAllowed = 'copy';
+        });
+        item.addEventListener('click', () => addElement(item.dataset.elementType));
+    });
+
+    // Canvas drop zone
+    canvas?.addEventListener('dragover', (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; });
+    canvas?.addEventListener('dragenter', (e) => { dragCounter++; canvas.classList.add('border-[#ea580c]', 'bg-orange-50/30'); });
+    canvas?.addEventListener('dragleave', () => { dragCounter--; if (dragCounter === 0) canvas.classList.remove('border-[#ea580c]', 'bg-orange-50/30'); });
+    canvas?.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dragCounter = 0;
+        canvas.classList.remove('border-[#ea580c]', 'bg-orange-50/30');
+        const type = e.dataTransfer.getData('text/element-type');
+        if (type) addElement(type);
+    });
+
+    // ===== PREVIEW =====
+    const previewOverlay = document.getElementById('preview-overlay');
+    const previewIframe = document.getElementById('preview-iframe');
+    const closePreview = document.getElementById('close-preview');
+    const previewUrl = document.getElementById('preview-url');
+
+    // Expose globally for the parent page button
+    window.openGraphicPreview = function() {
+        if (canvasElements.length === 0) { alert('Agrega al menos un elemento al lienzo antes de previsualizar.'); return; }
+        const pageTitle = viewTitle || 'Preview';
+        let body = '';
+        canvasElements.forEach(el => {
+            body += `<div style="width:100%;max-width:600px;margin:20px auto;padding:30px;border-radius:12px;background:${el.color};border:2px solid ${el.borderColor};text-align:center;">
+                <h2 style="color:${el.textColor};font-size:1.5rem;font-weight:bold;margin:0 0 8px 0;">${el.title}</h2>
+                <p style="color:${el.textColor}99;font-size:0.9rem;margin:0;">${el.body}</p>
+            </div>`;
+        });
+        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${pageTitle}</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:system-ui,sans-serif;background:#f8f9fa;padding:40px 20px;min-height:100vh;}</style></head><body>${body}</body></html>`;
+        previewIframe.srcdoc = html;
+        previewUrl.textContent = `preview://localhost/${pageTitle.toLowerCase().replace(/\s+/g, '-')}`;
+        previewOverlay.classList.remove('hidden');
+        previewOverlay.classList.add('flex');
+    };
+
+    closePreview?.addEventListener('click', () => { previewOverlay.classList.add('hidden'); previewOverlay.classList.remove('flex'); });
+    previewOverlay?.addEventListener('click', (e) => { if (e.target === previewOverlay) { previewOverlay.classList.add('hidden'); previewOverlay.classList.remove('flex'); } });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !previewOverlay.classList.contains('hidden')) { previewOverlay.classList.add('hidden'); previewOverlay.classList.remove('flex'); } });
+</script>
