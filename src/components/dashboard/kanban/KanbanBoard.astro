@@ -1,0 +1,126 @@
+---
+/** KanbanBoard — 3-column drag & drop task board: Pendiente, En Progreso, Completada */
+---
+<div class="flex-1 flex flex-col" id="kanban-root">
+    <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 min-h-[60vh]">
+        <!-- Pendiente -->
+        <div class="bg-gray-50 rounded-xl p-4 flex flex-col" data-column="pendiente">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                    <h3 class="text-sm font-bold text-gray-700">Pendiente</h3>
+                </div>
+                <span class="text-xs bg-yellow-100 text-yellow-700 font-bold rounded-full px-2 py-0.5" id="count-pendiente">0</span>
+            </div>
+            <div class="flex-1 space-y-3 kanban-drop-zone min-h-[200px]" data-status="pendiente" id="col-pendiente"></div>
+        </div>
+
+        <!-- En Progreso -->
+        <div class="bg-blue-50/50 rounded-xl p-4 flex flex-col" data-column="progreso">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+                    <h3 class="text-sm font-bold text-gray-700">En Progreso</h3>
+                </div>
+                <span class="text-xs bg-blue-100 text-blue-700 font-bold rounded-full px-2 py-0.5" id="count-progreso">0</span>
+            </div>
+            <div class="flex-1 space-y-3 kanban-drop-zone min-h-[200px]" data-status="progreso" id="col-progreso"></div>
+        </div>
+
+        <!-- Completada -->
+        <div class="bg-green-50/50 rounded-xl p-4 flex flex-col" data-column="completada">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                    <h3 class="text-sm font-bold text-gray-700">Completada</h3>
+                </div>
+                <span class="text-xs bg-green-100 text-green-700 font-bold rounded-full px-2 py-0.5" id="count-completada">0</span>
+            </div>
+            <div class="flex-1 space-y-3 kanban-drop-zone min-h-[200px]" data-status="completada" id="col-completada"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .kanban-card { cursor: grab; }
+    .kanban-card:active { cursor: grabbing; }
+    .kanban-card.dragging { opacity: 0.5; transform: rotate(2deg); }
+    .kanban-drop-zone.drag-over { background: rgba(234, 88, 12, 0.05); border: 2px dashed #ea580c; border-radius: 0.75rem; }
+</style>
+
+<script is:inline>
+(function(){
+    const tasks = [
+        { id: 'T-001', title: 'Inspeccionar perímetro norte', team: 'Equipo Alpha', priority: 'Alta', status: 'pendiente' },
+        { id: 'T-002', title: 'Evacuar residentes zona 3', team: 'Equipo Bravo', priority: 'Crítica', status: 'progreso' },
+        { id: 'T-003', title: 'Reportar inventario de vehículos', team: 'Estación Central', priority: 'Media', status: 'pendiente' },
+        { id: 'T-004', title: 'Coordinación con bomberos aéreos', team: 'Equipo Alpha', priority: 'Alta', status: 'progreso' },
+        { id: 'T-005', title: 'Informe de cierre INC-300', team: 'Equipo Charlie', priority: 'Baja', status: 'completada' },
+        { id: 'T-006', title: 'Revisión de equipos de protección', team: 'Estación Norte', priority: 'Media', status: 'pendiente' },
+        { id: 'T-007', title: 'Entrenamiento nuevos voluntarios', team: 'Equipo Delta', priority: 'Baja', status: 'completada' },
+        { id: 'T-008', title: 'Establecer cortafuegos sector E', team: 'Equipo Bravo', priority: 'Crítica', status: 'progreso' },
+    ];
+
+    const priorityColors = {
+        'Crítica': 'bg-red-100 text-red-700',
+        'Alta': 'bg-orange-100 text-orange-700',
+        'Media': 'bg-yellow-100 text-yellow-700',
+        'Baja': 'bg-gray-100 text-gray-600',
+    };
+
+    function createCard(task) {
+        const div = document.createElement('div');
+        div.className = 'kanban-card bg-white rounded-lg p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow';
+        div.draggable = true;
+        div.dataset.taskId = task.id;
+        div.innerHTML = `
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-gray-400 font-mono">${task.id}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${priorityColors[task.priority] || ''}">${task.priority}</span>
+            </div>
+            <p class="text-sm font-semibold text-gray-800 mb-2">${task.title}</p>
+            <div class="flex items-center gap-1.5 text-xs text-gray-500">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                ${task.team}
+            </div>
+        `;
+
+        div.addEventListener('dragstart', e => {
+            div.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', task.id);
+            e.dataTransfer.effectAllowed = 'move';
+        });
+        div.addEventListener('dragend', () => div.classList.remove('dragging'));
+
+        return div;
+    }
+
+    function render() {
+        ['pendiente','progreso','completada'].forEach(status => {
+            const col = document.getElementById('col-'+status);
+            const count = document.getElementById('count-'+status);
+            if(!col) return;
+            col.innerHTML = '';
+            const items = tasks.filter(t => t.status === status);
+            items.forEach(t => col.appendChild(createCard(t)));
+            if(count) count.textContent = items.length;
+        });
+    }
+
+    // Drop zone listeners
+    document.querySelectorAll('.kanban-drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; zone.classList.add('drag-over'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            const taskId = e.dataTransfer.getData('text/plain');
+            const newStatus = zone.dataset.status;
+            const task = tasks.find(t => t.id === taskId);
+            if(task) { task.status = newStatus; render(); }
+        });
+    });
+
+    render();
+})();
+</script>

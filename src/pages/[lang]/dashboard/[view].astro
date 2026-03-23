@@ -3,6 +3,11 @@ export function getStaticPaths() {
   const langs = ['es', 'en', 'fr', 'pt', 'br'];
   const views = [
     'panel-entidades',
+    'panel-admin',
+    'panel-orquestador',
+    'panel-entidad',
+    'panel-estacion',
+    'panel-equipo',
     'mantenimiento',
     'error-404',
     'error-500',
@@ -13,6 +18,7 @@ export function getStaticPaths() {
     'equipos',
     'entidades',
     'tareas',
+    'usuarios',
     'settings'
   ];
   return langs.flatMap(lang => views.map(view => ({ params: { lang, view } })));
@@ -20,7 +26,6 @@ export function getStaticPaths() {
 
 import Layout from "../../../layouts/Layout.astro"
 import Sidebar from "../../../components/dashboard/base/Sidebar.astro"
-import HeaderDash from "../../../components/dashboard/base/HeaderDash.astro"
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 
 import GraphicElementView from "../../../components/dashboard/views/GraphicElementView.astro"
@@ -28,6 +33,7 @@ import FileManagerView from "../../../components/dashboard/views/FileManagerView
 import FormManagerView from "../../../components/dashboard/views/FormManagerView.astro"
 import WebFunctionView from "../../../components/dashboard/views/WebFunctionView.astro"
 import PanelView from "../../../components/dashboard/views/PanelView.astro"
+import SettingsView from "../../../components/dashboard/views/SettingsView.astro"
 import Modal from "../../../components/dashboard/modals/Modal.astro"
 
 const lang = getLangFromUrl(Astro.url);
@@ -36,6 +42,11 @@ const { view } = Astro.params;
 
 const titleMap = {
     'panel-entidades': 'Panel de Entidades',
+    'panel-admin': 'Panel de Administrador',
+    'panel-orquestador': 'Entidad Orquestadora',
+    'panel-entidad': 'Panel de Entidad',
+    'panel-estacion': 'Panel de Estación',
+    'panel-equipo': 'Panel de Equipo',
     'mantenimiento': 'Mantenimiento',
     'error-404': '404 no encontrado',
     'error-500': '500 error de servidor',
@@ -46,6 +57,7 @@ const titleMap = {
     'equipos': 'Equipos',
     'entidades': 'Entidades',
     'tareas': 'Tareas',
+    'usuarios': 'Usuarios y Accesos',
     'settings': 'Ajustes'
 };
 
@@ -53,6 +65,11 @@ const viewTitle = titleMap[view] || view;
 
 const categoryMap = {
     'panel-entidades': 'Paneles',
+    'panel-admin': 'Paneles',
+    'panel-orquestador': 'Paneles',
+    'panel-entidad': 'Paneles',
+    'panel-estacion': 'Paneles',
+    'panel-equipo': 'Paneles',
     'mantenimiento': 'Elementos Gráficos',
     'error-404': 'Elementos Gráficos',
     'error-500': 'Elementos Gráficos',
@@ -63,6 +80,7 @@ const categoryMap = {
     'equipos': 'Funciones Web',
     'entidades': 'Funciones Web',
     'tareas': 'Funciones Web',
+    'usuarios': 'Funciones Web',
     'settings': 'Configuración'
 };
 const category = categoryMap[view] || 'Panel';
@@ -72,11 +90,12 @@ const breadcrumbs = [
     { label: viewTitle }
 ];
 
-const isWebFunction = ['equipos', 'entidades', 'tareas', 'olvido-contrasena', 'restablecer-contrasena', 'settings'].includes(view);
+const isWebFunction = ['equipos', 'entidades', 'tareas', 'olvido-contrasena', 'restablecer-contrasena', 'usuarios'].includes(view);
 const isGraphicElement = ['mantenimiento', 'error-404', 'error-500'].includes(view);
 const isFormManager = ['formularios'].includes(view);
 const isFileManager = ['archivos'].includes(view);
-const isPanel = ['panel-entidades'].includes(view);
+const isPanel = ['panel-entidades'].includes(view) || view.startsWith('panel-');
+const isSettings = ['settings'].includes(view);
 
 const descMap = {
     file: 'Gestiona, comparte y organiza archivos multimedia.',
@@ -89,8 +108,7 @@ const description = isFileManager ? descMap.file : isFormManager ? descMap.form 
 <Layout title={`!Scarlet Dashboard - ${viewTitle}`}>
      <Sidebar />
      <main class="min-h-screen bg-[#f8f9fa] md:ml-[16rem]">
-        <HeaderDash breadcrumbs={breadcrumbs} />
-        <div class="p-4 md:p-8 pt-16 flex flex-col flex-1 min-h-[calc(100vh-70px)]">
+        <div class="p-4 md:p-8 pt-6 flex flex-col flex-1 min-h-[calc(100vh-70px)]">
             
             <div class="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div>
@@ -138,6 +156,7 @@ const description = isFileManager ? descMap.file : isFormManager ? descMap.form 
             {isFormManager && <FormManagerView viewTitle={viewTitle} />}
             {isWebFunction && <WebFunctionView viewTitle={viewTitle} />}
             {isPanel && <PanelView viewTitle={viewTitle} />}
+            {isSettings && <SettingsView viewTitle={viewTitle} />}
             
         </div>
      </main>

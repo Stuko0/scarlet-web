@@ -16,8 +16,10 @@
     "@types/three": "^0.137.0",
     "astro": "^5.7.9",
     "chart.js": "^4.4.5",
+    "simplex-noise": "^3.0.0",
     "tailwindcss": "^4.1.4",
-    "three": "^0.137.5"
+    "three": "^0.137.5",
+    "three-stdlib": "^2.8.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",

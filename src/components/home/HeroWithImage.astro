@@ -62,7 +62,7 @@ export const prerender = true;
         <div class="absolute inset-0">
           <Image 
             src={slide.image} 
-            alt="" 
+            alt={slide.title} 
             class="w-full h-full object-cover" 
             draggable="false" 
             loading={index === 0 ? "eager" : "lazy"}

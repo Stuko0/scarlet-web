@@ -1,0 +1,30 @@
+---
+export function getStaticPaths() { return ['es','en','fr','pt','br'].map(lang => ({ params: { lang } })); }
+import DashboardLayout from "../../../components/dashboard/base/DashboardLayout.astro"
+import DataGridView from "../../../components/dashboard/datagrid/DataGridView.astro"
+import SideDrawer from "../../../components/dashboard/datagrid/SideDrawer.astro"
+
+const columns = [
+    { key: 'name', label: 'Nombre del Equipo' },
+    { key: 'station', label: 'Estación' },
+    { key: 'members', label: 'Miembros' },
+    { key: 'status', label: 'Estado' },
+];
+const filters = [
+    { label: 'Estado', values: ['Activo', 'En Operación', 'Inactivo'] },
+];
+const fields = [
+    { key: 'name', label: 'Nombre del Equipo', type: 'text' },
+    { key: 'station', label: 'Estación Asignada', type: 'text' },
+    { key: 'leader', label: 'Jefe de Equipo', type: 'text' },
+    { key: 'members', label: 'Número de Miembros', type: 'number' },
+    { key: 'status', label: 'Estado', type: 'select', options: ['Activo', 'En Operación', 'Inactivo', 'Descanso'] },
+    { key: 'notes', label: 'Notas', type: 'textarea' },
+];
+---
+<DashboardLayout title="Gestión de Equipos">
+    <h1 class="text-2xl font-bold font-titles text-gray-800 mb-1">Gestión de Equipos</h1>
+    <p class="text-sm text-gray-500 mb-6">Administración de equipos tácticos, asignaciones y estado operativo.</p>
+    <DataGridView viewTitle="Equipos" columns={columns} filterOptions={filters} />
+    <SideDrawer fields={fields} />
+</DashboardLayout>

@@ -1,0 +1,257 @@
+---
+interface Props {
+    viewTitle: string;
+}
+const { viewTitle } = Astro.props;
+---
+
+<div class="flex-1 flex flex-col gap-6" id="settings-view">
+    
+    <!-- Tabs Navigation — vertical on desktop, stacked buttons on mobile -->
+    <div class="w-full flex-shrink-0">
+        <div class="flex flex-col sm:flex-row md:flex-col gap-1 md:w-64" id="settings-tabs">
+            <button type="button" class="flex-1 sm:flex-none text-left px-4 py-2.5 rounded-lg text-sm font-semibold text-[#ea580c] bg-orange-50/50 transition-colors active" data-tab-target="profile">
+                Mi Perfil & Seguridad
+            </button>
+            <button type="button" class="flex-1 sm:flex-none text-left px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors" data-tab-target="preferences">
+                Preferencias
+            </button>
+            <button type="button" class="flex-1 sm:flex-none text-left px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors" data-tab-target="notifications">
+                Notificaciones
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab Content Area — layout switches: stacked on mobile, side-by-side on desktop -->
+    <div class="flex flex-col md:flex-row gap-6">
+        <!-- Reattach tabs on desktop as sidebar (invisible on mobile since they're above) -->
+        <div class="hidden md:block w-64 flex-shrink-0">
+            <div class="flex flex-col gap-1 sticky top-6" id="settings-tabs-desktop"></div>
+        </div>
+
+        <div class="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
+            
+            <!-- Tab: Mi Perfil & Seguridad -->
+            <div id="tab-profile" class="tab-pane">
+                <h3 class="text-lg font-bold text-gray-800 mb-6 font-titles border-b pb-4">Información Personal</h3>
+                
+                <div class="flex flex-col gap-6 mb-8">
+                    <div class="shrink-0 flex justify-center sm:justify-start">
+                        <div class="relative w-24 h-24 rounded-full overflow-hidden bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center group cursor-pointer">
+                            <span class="text-xs text-center text-gray-500 font-medium group-hover:text-[#ea580c]">Subir<br/>Foto</span>
+                            <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre</label>
+                            <input type="text" class="block w-full rounded-md border-gray-300 focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border placeholder-gray-400" value="John" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Apellidos</label>
+                            <input type="text" class="block w-full rounded-md border-gray-300 focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border placeholder-gray-400" value="Doe" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Correo Electrónico (No modificable)</label>
+                            <input type="email" class="block w-full rounded-md border-gray-300 bg-gray-50 text-gray-500 sm:text-sm p-2.5 border" value="john.doe@bomberos.gov" disabled />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Teléfono Móvil</label>
+                            <input type="tel" class="block w-full rounded-md border-gray-300 focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-2.5 border placeholder-gray-400" value="+1 555-0123" />
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold text-gray-800 mb-6 font-titles border-b pb-4">Seguridad y Acceso</h3>
+                
+                <div class="grid grid-cols-1 gap-6 max-w-2xl">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Cambiar Contraseña</label>
+                        <div class="mt-1 flex flex-col sm:flex-row gap-2 sm:gap-0">
+                            <input type="password" class="flex-1 min-w-0 block w-full px-3 py-2 sm:rounded-none sm:rounded-l-md rounded-md focus:ring-[#ea580c] focus:border-[#ea580c] sm:text-sm border-gray-300 border" placeholder="Nueva contraseña">
+                            <button type="button" class="inline-flex items-center justify-center px-4 py-2 border sm:border-l-0 border-gray-300 sm:rounded-none sm:rounded-r-md rounded-md bg-gray-50 text-gray-700 sm:text-sm font-medium hover:bg-gray-100">
+                                Actualizar
+                            </button>
+                        </div>
+                        <p class="mt-2 text-xs text-gray-500">Usa mínimo 8 caracteres con números y símbolos.</p>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-gray-200 rounded-lg p-4 bg-gray-50/50">
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800">Autenticación de Dos Factores (2FA)</h4>
+                            <p class="text-xs text-gray-500 mt-1">Protege tu cuenta con un método adicional de verificación (Ej. Google Authenticator).</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                          <input type="checkbox" value="" class="sr-only peer">
+                          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#ea580c]"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button type="button" class="w-full sm:w-auto px-6 py-2.5 bg-[#ea580c] hover:bg-[#c24106] text-white rounded-md shadow-sm text-sm font-semibold transition-colors">Guardar Perfil</button>
+                </div>
+            </div>
+
+            <!-- Tab: Preferencias de Sistema -->
+            <div id="tab-preferences" class="tab-pane hidden">
+                <h3 class="text-lg font-bold text-gray-800 mb-6 font-titles border-b pb-4">Preferencias de Sistema</h3>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Idioma de la Aplicación</label>
+                        <select class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border bg-white">
+                            <option value="es">Español (Latinoamérica)</option>
+                            <option value="en">English (US)</option>
+                            <option value="fr">Français</option>
+                            <option value="pt">Português</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Zona Horaria</label>
+                        <select class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border bg-white">
+                            <option value="UTC-4">(UTC-04:00) Santiago</option>
+                            <option value="UTC-5">(UTC-05:00) Bogotá, Lima, Quito</option>
+                            <option value="UTC-3">(UTC-03:00) Buenos Aires</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Tema Visual</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="theme" value="light" class="peer sr-only" checked>
+                                <div class="w-full h-16 sm:h-20 border-2 border-gray-200 rounded-lg flex items-center justify-center bg-white peer-checked:border-[#ea580c] peer-checked:ring-1 peer-checked:ring-[#ea580c] transition-all">
+                                    <span class="text-xs sm:text-sm font-medium text-gray-700">Claro</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="theme" value="dark" class="peer sr-only">
+                                <div class="w-full h-16 sm:h-20 border-2 border-gray-200 rounded-lg flex items-center justify-center bg-gray-900 peer-checked:border-[#ea580c] peer-checked:ring-1 peer-checked:ring-[#ea580c] transition-all">
+                                    <span class="text-xs sm:text-sm font-medium text-gray-300">Oscuro</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="theme" value="system" class="peer sr-only">
+                                <div class="w-full h-16 sm:h-20 border-2 border-gray-200 rounded-lg flex flex-col items-center justify-center bg-gradient-to-br from-white to-gray-800 peer-checked:border-[#ea580c] peer-checked:ring-1 peer-checked:ring-[#ea580c] transition-all">
+                                    <span class="text-xs sm:text-sm font-medium text-white mix-blend-difference">Auto</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button type="button" class="w-full sm:w-auto px-6 py-2.5 bg-[#ea580c] hover:bg-[#c24106] text-white rounded-md shadow-sm text-sm font-semibold transition-colors">Aplicar Preferencias</button>
+                </div>
+            </div>
+
+            <!-- Tab: Notificaciones -->
+            <div id="tab-notifications" class="tab-pane hidden">
+                <h3 class="text-lg font-bold text-gray-800 mb-6 font-titles border-b pb-4">Canales de Notificación</h3>
+                
+                <div class="space-y-6 max-w-2xl">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800">Alertas de Emergencia</h4>
+                            <p class="text-xs text-gray-500 mt-1">Notificaciones inmediatas para nuevos incidentes en tu jurisdicción.</p>
+                        </div>
+                        <div class="flex gap-4 flex-shrink-0">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-[#ea580c] focus:ring-[#ea580c]" checked>
+                                <span class="text-sm text-gray-700">Push</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-[#ea580c] focus:ring-[#ea580c]" checked>
+                                <span class="text-sm text-gray-700">SMS</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 pt-4 border-t border-gray-100">
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800">Actualizaciones de Tareas</h4>
+                            <p class="text-xs text-gray-500 mt-1">Avisos cuando se te asigne o modifique una tarea.</p>
+                        </div>
+                        <div class="flex gap-4 flex-shrink-0">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-[#ea580c] focus:ring-[#ea580c]" checked>
+                                <span class="text-sm text-gray-700">Push</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-[#ea580c] focus:ring-[#ea580c]">
+                                <span class="text-sm text-gray-700">Email</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 pt-4 border-t border-gray-100">
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800">Reportes Semanales</h4>
+                            <p class="text-xs text-gray-500 mt-1">Resumen estadístico de tu equipo o entidad.</p>
+                        </div>
+                        <div class="flex gap-4 flex-shrink-0">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-[#ea580c] focus:ring-[#ea580c]" checked>
+                                <span class="text-sm text-gray-700">Email</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button type="button" class="w-full sm:w-auto px-6 py-2.5 bg-[#ea580c] hover:bg-[#c24106] text-white rounded-md shadow-sm text-sm font-semibold transition-colors">Guardar Avisos</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab System — syncs mobile top tabs with desktop sidebar tabs
+    function initSettingsTabs() {
+        const mobileTabs = document.querySelectorAll('#settings-tabs [data-tab-target]');
+        const desktopContainer = document.getElementById('settings-tabs-desktop');
+        const panes = document.querySelectorAll('.tab-pane');
+
+        // Clone tabs into desktop sidebar
+        if (desktopContainer) {
+            mobileTabs.forEach(tab => {
+                const clone = tab.cloneNode(true) as HTMLElement;
+                desktopContainer.appendChild(clone);
+            });
+        }
+
+        const allTabs = document.querySelectorAll('[data-tab-target]');
+
+        allTabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const target = (e.currentTarget as HTMLElement).dataset.tabTarget;
+                
+                // Update all tab states
+                allTabs.forEach(t => {
+                    t.classList.remove('text-[#ea580c]', 'bg-orange-50/50', 'font-semibold');
+                    t.classList.add('text-gray-600', 'font-medium');
+                    t.classList.remove('active');
+                });
+
+                // Activate matching tabs (both mobile and desktop)
+                allTabs.forEach(t => {
+                    if ((t as HTMLElement).dataset.tabTarget === target) {
+                        t.classList.remove('text-gray-600', 'font-medium');
+                        t.classList.add('text-[#ea580c]', 'bg-orange-50/50', 'font-semibold', 'active');
+                    }
+                });
+
+                // Switch panes
+                panes.forEach(p => p.classList.add('hidden'));
+                const targetPane = document.getElementById(`tab-${target}`);
+                if (targetPane) targetPane.classList.remove('hidden');
+            });
+        });
+    }
+
+    initSettingsTabs();
+</script>

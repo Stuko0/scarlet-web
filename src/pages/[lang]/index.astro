@@ -20,9 +20,21 @@ import FirstStep from '../../components/home/FirstStep.astro';
 import SecondStep from '../../components/home/SecondStep.astro';
 import ThirdStep from '../../components/home/ThirdStep.astro';
 import FAQ from '../../components/home/FAQ.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const descriptions: Record<string, string> = {
+  es: "!Scarlet — Plataforma de monitoreo y prevención de incendios forestales en Cochabamba, Bolivia. Mapas en tiempo real e IA para proteger el bosque.",
+  en: "!Scarlet — Forest fire monitoring and prevention platform in Cochabamba, Bolivia. Real-time maps and AI to protect the forest.",
+  fr: "!Scarlet — Plateforme de surveillance et de prévention des incendies de forêt à Cochabamba, Bolivie.",
+  pt: "!Scarlet — Plataforma de monitoramento e prevenção de incêndios florestais em Cochabamba, Bolívia.",
+  br: "!Scarlet — Plataforma de monitoramento e prevenção de incêndios florestais em Cochabamba, Bolívia.",
+};
 ---
 
-<Layout title="!Scarlet Web">
+<Layout title="!Scarlet — Monitoreo de Incendios Forestales" description={descriptions[lang] || descriptions.es} lang={lang}>
 	<main>
 		<Header/>
 		<HeroWithImage/>

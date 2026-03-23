@@ -1,0 +1,21 @@
+---
+export function getStaticPaths() { return ['es','en','fr','pt','br'].map(lang => ({ params: { lang } })); }
+import DashboardLayout from "../../../components/dashboard/base/DashboardLayout.astro"
+---
+<DashboardLayout title="Restablecer Contraseña">
+    <div class="max-w-md mx-auto mt-12">
+        <h1 class="text-2xl font-bold font-titles text-gray-800 mb-2 text-center">Restablecer Contraseña</h1>
+        <p class="text-sm text-gray-500 mb-8 text-center">Ingresa tu nueva contraseña.</p>
+        <form class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Nueva Contraseña</label>
+                <input type="password" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border" placeholder="Mínimo 8 caracteres" />
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Confirmar Contraseña</label>
+                <input type="password" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 sm:text-sm p-3 border" placeholder="Repite la contraseña" />
+            </div>
+            <button type="button" class="w-full bg-[#ea580c] hover:bg-[#c24106] text-white py-3 rounded-lg font-semibold text-sm transition-colors">Restablecer Contraseña</button>
+        </form>
+    </div>
+</DashboardLayout>

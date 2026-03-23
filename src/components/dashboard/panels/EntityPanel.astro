@@ -1,0 +1,63 @@
+---
+/** EntityPanel — Entity-level view: overview of the entity's stations and capacity */
+---
+<div class="space-y-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Estaciones</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">8</p>
+            <p class="text-xs text-green-600 font-bold mt-1">Todas operativas</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Equipos Activos</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">23</p>
+            <p class="text-xs text-gray-500 mt-1">de 30 totales</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Incidentes Hoy</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">5</p>
+            <p class="text-xs text-orange-600 font-bold mt-1">2 activos</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Personal en Turno</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">112</p>
+            <p class="text-xs text-gray-500 mt-1">Turno diurno</p>
+        </div>
+    </div>
+
+    <!-- Stations Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-5 py-3 border-b border-gray-100">
+            <h3 class="text-sm font-bold text-gray-800">Estaciones de la Entidad</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-100">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estación</th>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Jefe</th>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Equipos</th>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Personal</th>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    {[
+                        { name: 'Estación Central', chief: 'Cap. García', teams: 5, personnel: 22, status: 'Activa' },
+                        { name: 'Estación Norte', chief: 'Tte. Rodríguez', teams: 3, personnel: 14, status: 'Activa' },
+                        { name: 'Estación Poniente', chief: 'Cap. López', teams: 4, personnel: 18, status: 'Activa' },
+                        { name: 'Estación Sur', chief: 'Tte. Martínez', teams: 3, personnel: 12, status: 'Mantenimiento' },
+                    ].map(s => (
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-5 py-3 text-sm font-semibold text-gray-800">{s.name}</td>
+                            <td class="px-5 py-3 text-sm text-gray-600">{s.chief}</td>
+                            <td class="px-5 py-3 text-sm text-gray-600">{s.teams}</td>
+                            <td class="px-5 py-3 text-sm text-gray-600">{s.personnel}</td>
+                            <td class="px-5 py-3"><span class={`text-xs font-bold px-2 py-0.5 rounded-full ${s.status === 'Activa' ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>{s.status}</span></td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+---
+/** TeamPanel — Micro-level: team members, fatigue, GPS, current objective */
+---
+<div class="space-y-6">
+    <!-- Team Header -->
+    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center gap-4">
+        <div class="flex-1">
+            <h2 class="text-lg font-bold text-gray-900">Equipo Alpha — Turno Diurno</h2>
+            <p class="text-sm text-gray-500 mt-0.5">Estación Central · Jefe: Tte. Rodríguez · 6 miembros</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="text-xs font-bold bg-red-50 text-red-700 px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                En Operación
+            </span>
+        </div>
+    </div>
+
+    <!-- Current Objective -->
+    <div class="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <h3 class="text-sm font-bold text-red-800">Objetivo Actual Asignado</h3>
+        </div>
+        <p class="text-sm text-red-700 font-medium">Contener perímetro norte del Incendio INC-841 — Av. Principal Km 12</p>
+        <div class="flex items-center gap-4 mt-2 text-xs text-red-600">
+            <span>Prioridad: <strong>P0</strong></span>
+            <span>Asignado: <strong>Hace 45 min</strong></span>
+            <span>Coord: <strong>-33.4372, -70.6506</strong></span>
+        </div>
+    </div>
+
+    <!-- Team Members Grid -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-5 py-3 border-b border-gray-100">
+            <h3 class="text-sm font-bold text-gray-800">Miembros del Equipo</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-100">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Miembro</th>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Rango</th>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Fatiga</th>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Última GPS</th>
+                        <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    {[
+                        { name: 'Tte. Rodríguez', rank: 'Jefe de Equipo', fatigue: 35, gps: '-33.437, -70.650', status: 'Activo' },
+                        { name: 'Sgto. Fernández', rank: 'Operador', fatigue: 55, gps: '-33.438, -70.651', status: 'Activo' },
+                        { name: 'Brig. Soto', rank: 'Bombero', fatigue: 70, gps: '-33.436, -70.649', status: 'Activo' },
+                        { name: 'Brig. Muñoz', rank: 'Bombero', fatigue: 40, gps: '-33.437, -70.652', status: 'Activo' },
+                        { name: 'Brig. Castillo', rank: 'Paramédico', fatigue: 25, gps: '-33.439, -70.648', status: 'En base' },
+                        { name: 'Vol. Herrera', rank: 'Voluntario', fatigue: 80, gps: '-33.436, -70.650', status: 'Descanso' },
+                    ].map(m => (
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-5 py-3 text-sm font-semibold text-gray-800">{m.name}</td>
+                            <td class="px-5 py-3 text-sm text-gray-600">{m.rank}</td>
+                            <td class="px-5 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-16 bg-gray-100 rounded-full h-1.5">
+                                        <div class={`h-1.5 rounded-full ${m.fatigue >= 70 ? 'bg-red-500' : m.fatigue >= 50 ? 'bg-yellow-500' : 'bg-green-500'}`} style={`width: ${m.fatigue}%`}></div>
+                                    </div>
+                                    <span class="text-xs text-gray-500 font-mono">{m.fatigue}%</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-3 text-xs text-gray-500 font-mono">{m.gps}</td>
+                            <td class="px-5 py-3">
+                                <span class={`text-xs font-bold px-2 py-0.5 rounded-full ${m.status === 'Activo' ? 'bg-green-50 text-green-700' : m.status === 'Descanso' ? 'bg-yellow-50 text-yellow-700' : 'bg-blue-50 text-blue-700'}`}>{m.status}</span>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,130 @@
+---
+/**
+ * DataGridView — Fullscreen data table with search, chip filters, and action buttons.
+ * Used by: Usuarios, Equipos, Entidades CRUD pages.
+ */
+interface Props {
+    viewTitle: string;
+    columns: { key: string; label: string }[];
+    filterOptions?: { label: string; values: string[] }[];
+}
+
+const { viewTitle, columns = [], filterOptions = [] } = Astro.props;
+const prefix = viewTitle.substring(0, 3).toUpperCase();
+---
+
+<div class="flex-1 flex flex-col gap-0 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden" id="datagrid-root">
+    <!-- Toolbar -->
+    <div class="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between bg-white">
+        <div class="flex items-center gap-3 flex-wrap">
+            <!-- Search -->
+            <div class="relative">
+                <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" id="dg-search" placeholder="Buscar..." class="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:border-[#ea580c] focus:ring focus:ring-[#ea580c]/20 w-64" />
+            </div>
+            <!-- Filter chips -->
+            {filterOptions.map(f => (
+                <select class="text-xs border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-600 focus:border-[#ea580c] dg-filter">
+                    <option value="">{f.label}</option>
+                    {f.values.map(v => <option value={v}>{v}</option>)}
+                </select>
+            ))}
+        </div>
+        <button id="dg-btn-new" class="bg-[#ea580c] hover:bg-[#c24106] text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors shadow-sm flex items-center gap-2 flex-shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            Nuevo Registro
+        </button>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto flex-1">
+        <table class="min-w-full divide-y divide-gray-100">
+            <thead class="bg-gray-50/80 sticky top-0">
+                <tr>
+                    <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider w-10">
+                        <input type="checkbox" class="rounded border-gray-300 text-[#ea580c] focus:ring-[#ea580c]" id="dg-select-all" />
+                    </th>
+                    {columns.map(col => (
+                        <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700 transition-colors">{col.label}</th>
+                    ))}
+                    <th class="px-5 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50" id="dg-tbody"></tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-5 py-3 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between">
+        <span class="text-xs text-gray-500" id="dg-count">0 registros</span>
+        <div class="flex gap-1" id="dg-pagination"></div>
+    </div>
+</div>
+
+<script define:vars={{ prefix, columns }}>
+(function(){
+    const cols = columns;
+    let records = [];
+    for(let i=1; i<=15; i++){
+        const row = { _id: prefix+'-'+String(i).padStart(3,'0') };
+        cols.forEach((c,j) => {
+            if(j===0) row[c.key] = 'Elemento '+i;
+            else if(c.key === 'status') row[c.key] = i%3===0? 'Inactivo' : 'Activo';
+            else if(c.key === 'role') row[c.key] = ['Admin','Operador','Bombero'][i%3];
+            else row[c.key] = 'Dato '+(i+j);
+        });
+        row._time = 'Hace '+(i*2)+' horas';
+        records.push(row);
+    }
+
+    let page=1; const perPage=8;
+
+    function render(filter){
+        filter = filter || '';
+        const filtered = filter ? records.filter(r => Object.values(r).some(v => String(v).toLowerCase().includes(filter))) : records;
+        const total = filtered.length, pages = Math.ceil(total/perPage);
+        const start = (page-1)*perPage, items = filtered.slice(start, start+perPage);
+        const tbody = document.getElementById('dg-tbody');
+        if(tbody) tbody.innerHTML = items.map(r => `<tr class="hover:bg-orange-50/30 transition-colors group">
+            <td class="px-5 py-3"><input type="checkbox" class="rounded border-gray-300 text-[#ea580c] focus:ring-[#ea580c]" /></td>
+            ${cols.map(c => `<td class="px-5 py-3 text-sm ${c.key==='status' ? '' : 'text-gray-700'}">
+                ${c.key === 'status' 
+                    ? `<span class="text-xs font-bold px-2 py-0.5 rounded-full ${r[c.key]==='Activo'?'bg-green-50 text-green-700':'bg-gray-100 text-gray-500'}">${r[c.key]}</span>`
+                    : (c.key === cols[0].key ? `<span class="font-semibold">${r[c.key]}</span>` : r[c.key] || '—')
+                }
+            </td>`).join('')}
+            <td class="px-5 py-3 text-right">
+                <button class="text-xs text-[#ea580c] font-semibold hover:underline mr-3 dg-edit" data-id="${r._id}">Editar</button>
+                <button class="text-xs text-red-500 font-semibold hover:underline dg-del" data-id="${r._id}">Eliminar</button>
+            </td>
+        </tr>`).join('');
+
+        const cnt = document.getElementById('dg-count');
+        if(cnt) cnt.textContent = `Mostrando ${items.length} de ${total} registros`;
+
+        const pg = document.getElementById('dg-pagination');
+        if(pg){
+            let h = '';
+            for(let i=1; i<=pages; i++) h += `<button class="px-3 py-1 rounded text-xs font-medium ${i===page?'bg-[#ea580c] text-white':'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'} dg-pg" data-p="${i}">${i}</button>`;
+            pg.innerHTML = h;
+            pg.querySelectorAll('.dg-pg').forEach(b => b.addEventListener('click', () => { page=parseInt(b.dataset.p); render(filter); }));
+        }
+
+        document.querySelectorAll('.dg-del').forEach(b => b.addEventListener('click', () => {
+            records = records.filter(r => r._id !== b.dataset.id); render(filter);
+        }));
+
+        document.querySelectorAll('.dg-edit').forEach(b => b.addEventListener('click', () => {
+            if(window.openSideDrawer) window.openSideDrawer(records.find(r => r._id === b.dataset.id));
+        }));
+    }
+
+    document.getElementById('dg-search')?.addEventListener('input', e => { page=1; render(e.target.value.toLowerCase()); });
+    document.getElementById('dg-btn-new')?.addEventListener('click', () => {
+        if(window.openSideDrawer) window.openSideDrawer(null);
+    });
+
+    window.addGridRecord = function(data){ records.unshift(data); render(); };
+    render();
+})();
+</script>

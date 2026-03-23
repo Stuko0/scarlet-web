@@ -1,0 +1,89 @@
+---
+/** OrchestratorPanel — Macro distribution, station status, global response times */
+---
+<div class="space-y-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Entidades Activas</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">14</p>
+            <p class="text-xs text-green-600 font-bold mt-1">100% operativas</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Estaciones Totales</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">47</p>
+            <p class="text-xs text-gray-500 mt-1">3 en mantenimiento</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Tiempo de Respuesta</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">8.2<span class="text-lg">min</span></p>
+            <p class="text-xs text-green-600 font-bold mt-1">↓ 1.3 min vs mes anterior</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Personal Total</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">1,234</p>
+            <p class="text-xs text-gray-500 mt-1">87 desplegados hoy</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Station Distribution -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-5 py-3 border-b border-gray-100">
+                <h3 class="text-sm font-bold text-gray-800">Distribución por Entidad</h3>
+            </div>
+            <div class="p-5 space-y-3">
+                {[
+                    { name: 'Bomberos Región Metropolitana', stations: 12, personnel: 340, pct: 75 },
+                    { name: 'Bomberos Región Sur', stations: 8, personnel: 220, pct: 60 },
+                    { name: 'Bomberos Región Norte', stations: 6, personnel: 180, pct: 85 },
+                    { name: 'Bomberos Zona Costera', stations: 5, personnel: 150, pct: 50 },
+                ].map(e => (
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium text-gray-700">{e.name}</span>
+                            <span class="text-xs text-gray-400">{e.stations} estaciones · {e.personnel} personas</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2">
+                            <div class={`h-2 rounded-full transition-all ${e.pct >= 70 ? 'bg-green-500' : e.pct >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`} style={`width: ${e.pct}%`}></div>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-0.5">{e.pct}% capacidad operativa</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <!-- Response Times by Region -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-5 py-3 border-b border-gray-100">
+                <h3 class="text-sm font-bold text-gray-800">Tiempos de Respuesta Promedio</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-100">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Región</th>
+                            <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Promedio</th>
+                            <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Mejor</th>
+                            <th class="px-5 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50">
+                        {[
+                            { region: 'Metropolitana', avg: '6.5 min', best: '3.2 min', ok: true },
+                            { region: 'Sur', avg: '9.1 min', best: '4.8 min', ok: true },
+                            { region: 'Norte', avg: '12.3 min', best: '7.1 min', ok: false },
+                            { region: 'Costera', avg: '8.0 min', best: '5.5 min', ok: true },
+                        ].map(r => (
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-5 py-3 text-sm font-medium text-gray-700">{r.region}</td>
+                                <td class="px-5 py-3 text-sm text-gray-600 font-mono">{r.avg}</td>
+                                <td class="px-5 py-3 text-sm text-gray-600 font-mono">{r.best}</td>
+                                <td class="px-5 py-3"><span class={`text-xs font-bold px-2 py-0.5 rounded-full ${r.ok ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>{r.ok ? 'Óptimo' : 'Crítico'}</span></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

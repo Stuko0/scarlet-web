@@ -1,13 +1,10 @@
 ---
-export function getStaticPaths() {
-  return [
-    { params: { lang: 'es' } },
-    { params: { lang: 'en' } },
-    { params: { lang: 'fr' } },
-    { params: { lang: 'pt' } },
-    { params: { lang: 'br' } },
-  ];
-}
+export function getStaticPaths() { return ['es','en','fr','pt','br'].map(lang => ({ params: { lang } })); }
+import DashboardLayout from "../../../components/dashboard/base/DashboardLayout.astro"
+import SettingsView from "../../../components/dashboard/views/SettingsView.astro"
 ---
-
-<h1>Settings</h1>
+<DashboardLayout title="Ajustes">
+    <h1 class="text-2xl font-bold font-titles text-gray-800 mb-1">Ajustes</h1>
+    <p class="text-sm text-gray-500 mb-6">Perfil, seguridad y preferencias del sistema.</p>
+    <SettingsView viewTitle="Ajustes" />
+</DashboardLayout>

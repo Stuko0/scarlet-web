@@ -1,4 +1,4 @@
-<div class="loader">
+<div class="loader" id="tree-loader">
   <div class="tree">
     <div class="branch" style="--x:0">
       <span style="--i:0;"></span>
@@ -32,14 +32,84 @@
     </div>
     <span class="shadow"></span>
   </div>
+  <p class="loader-status">Cargando modelo 3D...</p>
 </div>
+
+<script>
+  function initTreeLoader() {
+    const loader = document.getElementById('tree-loader');
+    if (!loader) return;
+
+    const statusEl = loader.querySelector('.loader-status') as HTMLElement | null;
+    let isHidden = false;
+
+    function hideLoader() {
+      if (isHidden) return;
+      isHidden = true;
+      const parent = loader!.parentElement;
+      loader!.classList.add('fade-out');
+      loader!.addEventListener('transitionend', () => {
+        loader!.style.display = 'none';
+        loader!.remove();
+        if (parent && parent.id === 'loader') {
+          parent.remove();
+        }
+      }, { once: true });
+    }
+
+    function showError() {
+      if (isHidden) return;
+      if (statusEl) {
+        statusEl.textContent = 'Error al cargar el modelo. Recarga la página.';
+        statusEl.classList.add('error');
+      }
+    }
+
+    // Listen for the 3D scene ready event
+    window.addEventListener('modelLoaded', hideLoader, { once: true });
+
+    // Listen for errors
+    window.addEventListener('modelError', showError as EventListener, { once: true });
+
+    // Safety fallback: if model hasn't loaded after 20s, show error
+    const fallbackTimer = setTimeout(() => {
+      if (!isHidden) {
+        showError();
+      }
+    }, 20000);
+
+    // Clear fallback if model loads successfully
+    window.addEventListener('modelLoaded', () => clearTimeout(fallbackTimer), { once: true });
+  }
+
+  document.addEventListener('DOMContentLoaded', initTreeLoader);
+</script>
 
 <style>
 .loader {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1.5rem;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.loader.fade-out {
+  opacity: 0;
+}
+
+.loader-status {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-align: center;
+}
+
+.loader-status.error {
+  color: #dc2626;
 }
 
 .tree {

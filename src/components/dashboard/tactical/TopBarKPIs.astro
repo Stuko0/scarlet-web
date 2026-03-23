@@ -1,0 +1,91 @@
+---
+/**
+ * TopBarKPIs — 4 metric cards for the tactical command center.
+ * Incendios Activos (Rojo), Personal Desplegado (Azul),
+ * Hectáreas Afectadas (Naranja), Alertas Críticas (Pulso).
+ */
+---
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Incendios Activos -->
+    <div class="bg-white rounded-xl p-4 border-l-4 border-red-500 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Incendios Activos</p>
+                <p class="text-3xl font-bold text-gray-900 mt-1">12</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg>
+            </div>
+        </div>
+        <div class="mt-2 flex items-center text-xs">
+            <span class="text-red-600 font-bold">↑ 3</span>
+            <span class="text-gray-400 ml-1">vs ayer</span>
+        </div>
+    </div>
+
+    <!-- Personal Desplegado -->
+    <div class="bg-white rounded-xl p-4 border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Personal Desplegado</p>
+                <p class="text-3xl font-bold text-gray-900 mt-1">87</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            </div>
+        </div>
+        <div class="mt-2 flex items-center text-xs">
+            <span class="text-blue-600 font-bold">64%</span>
+            <span class="text-gray-400 ml-1">del total activo</span>
+        </div>
+    </div>
+
+    <!-- Hectáreas Afectadas -->
+    <div class="bg-white rounded-xl p-4 border-l-4 border-orange-500 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Hectáreas Afectadas</p>
+                <p class="text-3xl font-bold text-gray-900 mt-1">2,345</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+        </div>
+        <div class="mt-2 flex items-center text-xs">
+            <span class="text-orange-600 font-bold">+130km</span>
+            <span class="text-gray-400 ml-1">perímetro total</span>
+        </div>
+    </div>
+
+    <!-- Alertas Críticas -->
+    <div class="bg-white rounded-xl p-4 border-l-4 border-yellow-500 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Alertas Críticas</p>
+                <p class="text-3xl font-bold text-gray-900 mt-1">4</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center kpi-pulse">
+                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+            </div>
+        </div>
+        <div class="mt-2 flex items-center text-xs">
+            <span class="text-yellow-700 font-bold">2 P0</span>
+            <span class="text-gray-400 ml-1">requieren acción inmediata</span>
+        </div>
+        <!-- Pulse ring animation -->
+        <div class="absolute top-3 right-3 w-2.5 h-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-500"></span>
+        </div>
+    </div>
+</div>
+
+<style>
+    .kpi-pulse {
+        animation: kpi-glow 2s ease-in-out infinite;
+    }
+    @keyframes kpi-glow {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.2); }
+        50% { box-shadow: 0 0 0 8px rgba(234, 179, 8, 0); }
+    }
+</style>

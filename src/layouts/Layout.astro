@@ -2,21 +2,55 @@
 import "../styles/global.css";
 import navbarScript from "../../public/scripts/navbar.js?url";
 import tabsScript from "../../public/scripts/tabs.js?url";
+
 interface Props {
 	title: string;
+	description?: string;
+	lang?: string;
 }
 
-const { title } = Astro.props;
+const { 
+	title, 
+	description = "!Scarlet — Plataforma de monitoreo y prevención de incendios forestales en Cochabamba, Bolivia. Mapas en tiempo real e IA para proteger el bosque.",
+	lang = "es"
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://scarlet.com");
+const supportedLangs = ["es", "en", "fr", "pt", "br"];
+const currentPath = Astro.url.pathname;
+const pathSegments = currentPath.split('/').filter(Boolean);
+const pathWithoutLang = pathSegments.length > 1 ? '/' + pathSegments.slice(1).join('/') : '/';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
+		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/fireicon.png" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonicalUrl.href} />
+
+		<!-- hreflang alternates -->
+		{supportedLangs.map((l) => (
+			<link rel="alternate" hreflang={l} href={new URL(`/${l}${pathWithoutLang}`, Astro.site || "https://scarlet.com").href} />
+		))}
+		<link rel="alternate" hreflang="x-default" href={new URL(`/es${pathWithoutLang}`, Astro.site || "https://scarlet.com").href} />
+
+		<!-- Open Graph -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalUrl.href} />
+		<meta property="og:locale" content={lang === "es" ? "es_BO" : lang} />
+		<meta property="og:site_name" content="!Scarlet" />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+
 		<link rel="stylesheet" href="/styles/style.css" />
 		<script src={navbarScript} defer></script>
 		<script src={tabsScript} defer></script>

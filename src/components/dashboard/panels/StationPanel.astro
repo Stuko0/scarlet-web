@@ -1,0 +1,79 @@
+---
+/** StationPanel — Station-level: vehicle inventory, on-duty staff, assigned incidents */
+---
+<div class="space-y-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl p-4 border-l-4 border-green-500 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Vehículos Disponibles</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">6</p>
+            <p class="text-xs text-gray-500 mt-1">de 8 totales</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border-l-4 border-yellow-500 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">En Mantenimiento</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">2</p>
+            <p class="text-xs text-yellow-600 font-bold mt-1">B-03, B-07</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border-l-4 border-blue-500 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Personal en Turno</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">18</p>
+            <p class="text-xs text-gray-500 mt-1">Turno A — Diurno</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border-l-4 border-red-500 shadow-sm">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Incidentes Asignados</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">3</p>
+            <p class="text-xs text-red-600 font-bold mt-1">1 crítico</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Vehicle Inventory -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-5 py-3 border-b border-gray-100">
+                <h3 class="text-sm font-bold text-gray-800">Inventario de Vehículos</h3>
+            </div>
+            <div class="divide-y divide-gray-50">
+                {[
+                    { id: 'B-01', type: 'Autobomba', status: 'Disponible', color: 'green' },
+                    { id: 'B-02', type: 'Cisterna', status: 'Desplegado', color: 'blue' },
+                    { id: 'B-03', type: 'Rescate', status: 'Mantenimiento', color: 'yellow' },
+                    { id: 'B-04', type: 'Autobomba', status: 'Disponible', color: 'green' },
+                    { id: 'B-05', type: 'Escalera', status: 'Disponible', color: 'green' },
+                    { id: 'B-07', type: 'Cisterna', status: 'Mantenimiento', color: 'yellow' },
+                ].map(v => (
+                    <div class="px-5 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-bold text-gray-800 font-mono">{v.id}</span>
+                            <span class="text-sm text-gray-600">{v.type}</span>
+                        </div>
+                        <span class={`text-xs font-bold px-2 py-0.5 rounded-full ${v.color === 'green' ? 'bg-green-50 text-green-700' : v.color === 'blue' ? 'bg-blue-50 text-blue-700' : 'bg-yellow-50 text-yellow-700'}`}>{v.status}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <!-- Active Incidents -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-5 py-3 border-b border-gray-100">
+                <h3 class="text-sm font-bold text-gray-800">Incidentes Activos de la Estación</h3>
+            </div>
+            <div class="divide-y divide-gray-50">
+                {[
+                    { id: 'INC-841', loc: 'Av. Principal Km 12', priority: 'P0', team: 'Equipo Alpha', time: 'Hace 45 min' },
+                    { id: 'INC-839', loc: 'Sector industrial norte', priority: 'P1', team: 'Equipo Bravo', time: 'Hace 2h' },
+                    { id: 'INC-835', loc: 'Parque Nacional Zona 3', priority: 'P1', team: 'Equipo Charlie', time: 'Hace 5h' },
+                ].map(inc => (
+                    <div class="px-5 py-3 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-gray-800 font-mono">{inc.id}</span>
+                            <span class={`text-xs font-bold px-2 py-0.5 rounded-full ${inc.priority === 'P0' ? 'bg-red-50 text-red-700' : 'bg-orange-50 text-orange-700'}`}>{inc.priority}</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-1">{inc.loc}</p>
+                        <div class="flex items-center gap-2 mt-1.5 text-[10px] text-gray-400">
+                            <span>{inc.team}</span> · <span>{inc.time}</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+</div>

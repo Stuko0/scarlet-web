@@ -1,0 +1,39 @@
+---
+import Layout from "../../../layouts/Layout.astro"
+import Sidebar from "./Sidebar.astro"
+
+interface Props {
+    title: string;
+    /** Full-bleed mode removes default padding (useful for maps, kanban, etc.) */
+    fullBleed?: boolean;
+}
+
+const { title, fullBleed = false } = Astro.props;
+---
+<Layout title={`!Scarlet — ${title}`}>
+    <Sidebar />
+    <main class="min-h-screen bg-[#f8f9fa] md:ml-[16rem] pt-14 md:pt-0">
+        {fullBleed ? (
+            <slot />
+        ) : (
+            <div class="p-4 md:p-6 flex flex-col min-h-screen">
+                <slot />
+            </div>
+        )}
+    </main>
+
+    <!-- Global Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-[10000] hidden">
+        <div class="bg-gray-900 text-white px-5 py-3 rounded-lg shadow-xl text-sm font-medium flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span id="toast-msg">Acción completada</span>
+        </div>
+    </div>
+</Layout>
+
+<script is:inline>
+window.showToast = function(msg) {
+    const t = document.getElementById('toast'), m = document.getElementById('toast-msg');
+    if (t && m) { m.textContent = msg; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 3000); }
+};
+</script>
